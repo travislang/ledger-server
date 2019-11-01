@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 const moment = require('moment')
 
-const refreshTokenSchema = new mongoose.Schema({
-    token: {
+
+const passwordResetTokenSchema = new mongoose.Schema({
+    resetToken: {
         type: String,
         required: true,
         index: true
@@ -21,25 +22,27 @@ const refreshTokenSchema = new mongoose.Schema({
     expires: { type: Date }
 })
 
-refreshTokenSchema.statics = {
-    async generate(user) {
+passwordResetTokenSchema.statics = {
+    generate(user) {
         const userId = user._id
         const userEmail = user.email
-        const token = `${userId}.${crypto.randomBytes(40).toString('hex')}`
+        const resetToken = `${userId}.${crypto.randomBytes(40).toString('hex')}`
         const expires = moment()
-            .add(30, 'days')
+            .add(2, 'hours')
             .toDate()
-        const tokenObject = new RefreshToken({
-            token,
+        const ResetTokenObject = new PasswordResetToken({
+            resetToken,
             userId,
             userEmail,
             expires
         })
-        await tokenObject.save()
-        return tokenObject
+        ResetTokenObject.save()
+        return ResetTokenObject
     }
 }
 
-const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema)
-
-module.exports = RefreshToken
+/**
+ * @typedef RefreshToken
+ */
+const PasswordResetToken = mongoose.model('PasswordResetToken', passwordResetTokenSchema)
+module.exports = PasswordResetToken

@@ -1,9 +1,12 @@
 const httpStatus = require('http-status');
 const User = require('../models/user.model');
 const RefreshToken = require('../models/refreshToken.model');
+const PasswordResetToken = require('../models/passwordResetToken.model')
 const moment = require('moment');
 const { jwtExpirationInterval } = require('../../config/keys');
 const omit = require('lodash/omit');
+const APIError = require('../utils/APIError')
+const emailProvider = require('../services/emails/emailProvider')
 
 
 function generateTokenResponse(user, accessToken) {
@@ -68,3 +71,50 @@ exports.refresh = async (req, res, next) => {
         return next(error);
     }
 };
+
+exports.sendPasswordReset = async (req, res, next) => {
+    try {
+        const { email } = req.body
+        const user = await User.findOne({ email }).exec()
+
+        if (user) {
+            const passwordResetObj = await PasswordResetToken.generate(user)
+            emailProvider.sendPasswordReset(passwordResetObj)
+            res.status(httpStatus.OK)
+            return res.json('success')
+        }
+        throw new APIError({ message: 'No account found with that email' })
+    } catch (error) {
+        return next(error)
+    }
+}
+
+exports.resetPassword = async (req, res, next) => {
+    try {
+        const { email, password, resetToken } = req.body
+        const resetTokenObject = await PasswordResetToken.findOneAndRemove({
+            userEmail: email,
+            resetToken
+        })
+        const err = {
+            status: httpStatus.UNAUTHORIZED,
+            isPublic: true
+        }
+        if (!resetTokenObject) {
+            err.message = 'Cannot find matching reset token'
+            throw new APIError(err)
+        }
+        if (moment().isAfter(resetTokenObject.expires)) {
+            err.message = 'Reset token is expired'
+            throw new APIError(err)
+        }
+        const user = await User.findById(resetTokenObject.userId).exec()
+        user.password = password
+        await user.save()
+        emailProvider.sendPasswordChangeEmail(user)
+        res.status(httpStatus.OK)
+        return res.json('Password Updated')
+    } catch (error) {
+        return next(error)
+    }
+}

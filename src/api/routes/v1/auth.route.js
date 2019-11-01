@@ -7,6 +7,8 @@ const {
     register,
     oAuth,
     refresh,
+    sendPasswordReset,
+    resetPassword
 } = require('../../validations/auth.validation');
 
 const router = express.Router();
@@ -17,14 +19,14 @@ router.route('/register')
 router.route('/login')
     .post(validate(login), controller.login);
 
-
 router.route('/refresh-token')
     .post(validate(refresh), controller.refresh);
 
+router
+    .route('/send-password-reset')
+    .post(validate(sendPasswordReset), controller.sendPasswordReset)
 
-/**
- * TODO: POST /v1/auth/reset-password
- */
+router.route('/reset-password').post(validate(resetPassword), controller.resetPassword)
 
 
 router.route('/facebook')
