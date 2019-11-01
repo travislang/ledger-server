@@ -2,14 +2,16 @@ const nodemailer = require('nodemailer')
 const { emailConfig } = require('../../../config/keys')
 const Email = require('email-templates')
 
+console.log('blah', emailConfig)
+
 const transporter = nodemailer.createTransport({
     port: emailConfig.port,
     host: emailConfig.host,
     auth: {
-        user: emailConfig.email,
+        user: emailConfig.username,
         pass: emailConfig.password
     },
-    secure: true
+    secure: false // upgrades later with STARTTLS
 })
 
 // verify connection configuration
@@ -36,7 +38,7 @@ exports.sendPasswordReset = async passwordResetObject => {
         .send({
             template: 'passwordReset',
             message: {
-                to: passwordResetObject.email
+                to: passwordResetObject.userEmail
             },
             locals: {
                 productName: 'Ledger',
@@ -50,10 +52,11 @@ exports.sendPasswordReset = async passwordResetObject => {
 }
 
 exports.sendPasswordChangeEmail = async user => {
+    console.log('this is user', user)
     const email = new Email({
         views: { root: __dirname },
         message: {
-            from: 'test@gmail.com'
+            from: 'support@ledger.com'
         },
         // uncomment below to send emails in development/test env:
         send: true,
@@ -72,5 +75,5 @@ exports.sendPasswordChangeEmail = async user => {
             }
         })
         .then(console.log('sent email hopefully....'))
-        .catch(console.error('error sending email'))
+        .catch(err => console.error('error sending email', err))
 }

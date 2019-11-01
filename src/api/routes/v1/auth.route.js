@@ -1,5 +1,5 @@
 const express = require('express');
-const validate = require('express-validation');
+const { celebrate } = require('celebrate')
 const controller = require('../../controllers/auth.controller');
 const oAuthLogin = require('../../middlewares/auth').oAuth;
 const {
@@ -14,26 +14,26 @@ const {
 const router = express.Router();
 
 router.route('/register')
-    .post(validate(register), controller.register);
+    .post(celebrate(register), controller.register);
 
 router.route('/login')
-    .post(validate(login), controller.login);
+    .post(celebrate(login), controller.login);
 
 router.route('/refresh-token')
-    .post(validate(refresh), controller.refresh);
+    .post(celebrate(refresh), controller.refresh);
 
 router
     .route('/send-password-reset')
-    .post(validate(sendPasswordReset), controller.sendPasswordReset)
+    .post(celebrate(sendPasswordReset), controller.sendPasswordReset)
 
-router.route('/reset-password').post(validate(resetPassword), controller.resetPassword)
+router.route('/reset-password').post(celebrate(resetPassword), controller.resetPassword)
 
 
 router.route('/facebook')
-    .post(validate(oAuth), oAuthLogin('facebook'), controller.oAuth);
+    .post(celebrate(oAuth), oAuthLogin('facebook'), controller.oAuth);
 
 router.route('/google')
-    .post(validate(oAuth), oAuthLogin('google'), controller.oAuth);
+    .post(celebrate(oAuth), oAuthLogin('google'), controller.oAuth);
 
 
 module.exports = router;

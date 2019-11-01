@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const expressValidation = require('express-validation');
+const { isCelebrate } = require('celebrate')
 const APIError = require('../utils/APIError');
 const { env } = require('../../config/keys');
 
@@ -31,19 +31,19 @@ exports.handler = handler;
 exports.converter = (err, req, res, next) => {
     let convertedError = err;
 
-    if (err instanceof expressValidation.ValidationError) {
+    if (isCelebrate(err)) {
         convertedError = new APIError({
             message: 'Validation Error',
             errors: err.errors,
             status: err.status,
-            stack: err.stack,
-        });
+            stack: err.stack
+        })
     } else if (!(err instanceof APIError)) {
         convertedError = new APIError({
             message: err.message,
             status: err.status,
-            stack: err.stack,
-        });
+            stack: err.stack
+        })
     }
 
     return handler(convertedError, req, res);

@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const { Joi } = require('celebrate')
 
 module.exports = {
     // POST /v1/auth/register
