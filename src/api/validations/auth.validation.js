@@ -1,9 +1,10 @@
 const { Joi } = require('celebrate')
+const User = require('../models/user.model')
 
 module.exports = {
     // POST /v1/auth/register
     register: {
-        body: {
+        body: Joi.object({
             email: Joi.string()
                 .email()
                 .required(),
@@ -11,52 +12,53 @@ module.exports = {
                 .required()
                 .min(6)
                 .max(128),
-            verifyPassword: Joi.ref('password')
-        }
+            name: Joi.string().max(128),
+            role: Joi.string().valid(User.roles)
+        })
     },
 
     // POST /v1/auth/login
     login: {
-        body: {
+        body: Joi.object({
             email: Joi.string()
                 .email()
                 .required(),
             password: Joi.string()
                 .required()
                 .max(128)
-        }
+        }).unknown()
     },
 
     // POST /v1/auth/facebook
     // POST /v1/auth/google
     oAuth: {
-        body: {
+        body: Joi.object({
             access_token: Joi.string().required()
-        }
+        })
     },
 
     // POST /v1/auth/refresh
     refresh: {
-        body: {
+        body: Joi.object({
             email: Joi.string()
                 .email()
                 .required(),
             refreshToken: Joi.string().required()
-        }
+        })
     },
 
     // POST /v1/auth/send-password-reset
     sendPasswordReset: {
-        body: {
+        body: Joi.object({
             email: Joi.string()
                 .email()
                 .required()
-        }
+        }).unknown()
     },
 
     // POST /v1/auth/reset-password
     resetPassword: {
-        body: {
+        body: Joi.object({
             email: Joi.string()
                 .email()
                 .required(),
@@ -65,6 +67,6 @@ module.exports = {
                 .min(6)
                 .max(128),
             resetToken: Joi.string().required()
-        }
+        })
     }
 }

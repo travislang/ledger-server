@@ -182,12 +182,12 @@ userSchema.statics = {
         if (user) {
             user.services[service] = id;
             if (!user.name) user.name = name;
-            if (!user.picture) user.picture = picture;
+            if (!user.picture) user.avatar = picture;
             return user.save();
         }
         const password = uuidv4();
         return this.create({
-            services: { [service]: id }, email, password, name, picture,
+            services: { [service]: id }, email, password, name, avatar: picture,
         });
     },
 };

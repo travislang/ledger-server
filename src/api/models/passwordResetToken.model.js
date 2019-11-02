@@ -23,7 +23,7 @@ const passwordResetTokenSchema = new mongoose.Schema({
 })
 
 passwordResetTokenSchema.statics = {
-    generate(user) {
+    async generate(user) {
         const userId = user._id
         const userEmail = user.email
         const resetToken = `${userId}.${crypto.randomBytes(40).toString('hex')}`
@@ -36,7 +36,7 @@ passwordResetTokenSchema.statics = {
             userEmail,
             expires
         })
-        ResetTokenObject.save()
+        await ResetTokenObject.save()
         return ResetTokenObject
     }
 }

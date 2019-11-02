@@ -2,8 +2,6 @@ const nodemailer = require('nodemailer')
 const { emailConfig } = require('../../../config/keys')
 const Email = require('email-templates')
 
-console.log('blah', emailConfig)
-
 const transporter = nodemailer.createTransport({
     port: emailConfig.port,
     host: emailConfig.host,
@@ -47,12 +45,10 @@ exports.sendPasswordReset = async passwordResetObject => {
                 passwordResetUrl: `https://your-app/new-password/view?resetToken=${passwordResetObject.resetToken}`
             }
         })
-        .then(console.log('sent email hopefully....'))
-        .catch(console.error('error sending email'))
+        .catch(err => console.error('error sending email', err))
 }
 
 exports.sendPasswordChangeEmail = async user => {
-    console.log('this is user', user)
     const email = new Email({
         views: { root: __dirname },
         message: {
@@ -74,6 +70,5 @@ exports.sendPasswordChangeEmail = async user => {
                 name: user.name
             }
         })
-        .then(console.log('sent email hopefully....'))
         .catch(err => console.error('error sending email', err))
 }
