@@ -83,7 +83,7 @@ exports.sendPasswordReset = async (req, res, next) => {
             res.status(httpStatus.OK)
             return res.json('success')
         }
-        throw new APIError({ message: 'No account found with that email' })
+        throw new APIError({ status: httpStatus.UNAUTHORIZED, message: 'No account found with that email' })
     } catch (error) {
         return next(error)
     }

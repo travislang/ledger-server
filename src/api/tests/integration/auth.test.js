@@ -7,6 +7,7 @@ const moment = require('moment-timezone');
 const app = require('../../../index');
 const User = require('../../models/user.model');
 const RefreshToken = require('../../models/refreshToken.model');
+const PasswordResetToken = require('../../models/passwordResetToken.model');
 const authProviders = require('../../services/authProviders');
 
 const sandbox = sinon.createSandbox();
@@ -23,7 +24,10 @@ describe('Authentication API', () => {
     let dbUser;
     let user;
     let refreshToken;
+    let resetToken;
     let expiredRefreshToken;
+    let expiredResetToken;
+
 
     beforeEach(async () => {
         dbUser = {
@@ -46,6 +50,13 @@ describe('Authentication API', () => {
             expires: moment().add(1, 'day').toDate(),
         };
 
+        resetToken = {
+            token: '5947397b323ae82d8c3a333b.c69d0435e62c9f4953af912442a3d064e20291f0d228c0552ed4be473e7d191ba40b18c2c47e8b9d',
+            userId: '5947397b323ae82d8c3a333b',
+            userEmail: dbUser.email,
+            expires: moment().add(2, 'hours').toDate(),
+        };
+
         expiredRefreshToken = {
             token: '5947397b323ae82d8c3a333b.c69d0435e62c9f4953af912442a3d064e20291f0d228c0552ed4be473e7d191ba40b18c2c47e8b9d',
             userId: '5947397b323ae82d8c3a333b',
@@ -53,9 +64,17 @@ describe('Authentication API', () => {
             expires: moment().subtract(1, 'day').toDate(),
         };
 
+        expiredResetToken = {
+            token: '5947397b323ae82d8c3a333b.c69d0435e62c9f4953af912442a3d064e20291f0d228c0552ed4be473e7d191ba40b18c2c47e8b9d',
+            userId: '5947397b323ae82d8c3a333b',
+            userEmail: dbUser.email,
+            expires: moment().subtract(2, 'hours').toDate(),
+        };
+
         await User.deleteMany({});
         await User.create(dbUser);
         await RefreshToken.deleteMany({});
+        await PasswordResetToken.deleteMany({})
     });
 
     afterEach(() => sandbox.restore());
@@ -337,4 +356,58 @@ describe('Authentication API', () => {
                 });
         });
     });
+    describe('POST /v1/auth/send-password-reset', () => {
+        it('should send an email with password reset link when email matches a user', async () => {
+            await PasswordResetToken.create(resetToken)
+            return request(app)
+                .post('/v1/auth/send-password-reset')
+                .send({ email: dbUser.email })
+                .expect(httpStatus.OK)
+                .then(res => {
+                    expect(res.body).to.be.equal('success')
+                })
+        })
+
+        it("should report error when email doesn't match a user", async () => {
+            await PasswordResetToken.create(resetToken)
+            return request(app)
+                .post('/v1/auth/send-password-reset')
+                .send({ email: user.email })
+                .expect(httpStatus.UNAUTHORIZED)
+                .then(res => {
+                    const { code } = res.body
+                    const { message } = res.body
+                    expect(code).to.be.equal(401)
+                    expect(message).to.be.equal('No account found with that email')
+                })
+        })
+
+        it('should report error when email is not provided', () => {
+            return request(app)
+                .post('/v1/auth/send-password-reset')
+                .send({})
+                .expect(httpStatus.BAD_REQUEST)
+                .then(res => {
+                    const field1 = res.body.errors[0].field
+                    const location1 = res.body.errors[0].location
+                    const messages1 = res.body.errors[0].messages
+                    expect(field1).to.be.equal('email')
+                    expect(location1).to.be.equal('body')
+                    expect(messages1).to.include('"email" is required')
+                })
+        })
+
+        // it('should report error when the resetToken is expired', async () => {
+        //     await PasswordResetToken.create(expiredResetToken)
+
+        //     return request(app)
+        //         .post('/v1/auth/send-password-reset')
+        //         .send({ email: dbUser.email, refreshToken: expiredRefreshToken.token })
+        //         .expect(httpStatus.UNAUTHORIZED)
+        //         .then(res => {
+        //             expect(res.body.code).to.be.equal(401)
+        //             expect(res.body.message).to.be.equal('Invalid refresh token.')
+        //         })
+        // })
+    })
 });
