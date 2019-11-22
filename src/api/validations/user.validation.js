@@ -1,52 +1,61 @@
 const { Joi } = require('celebrate')
-const User = require('../models/user.model');
+const { roleTypes } = require('../../config/accessControl')
 
 module.exports = {
-
     // GET /v1/users
     listUsers: {
-        query: {
+        query: Joi.object({
             page: Joi.number().min(1),
-            perPage: Joi.number().min(1).max(100),
+            perPage: Joi.number()
+                .min(1)
+                .max(100),
             name: Joi.string(),
-            email: Joi.string(),
-            role: Joi.string().valid(User.roles),
-        },
+            email: Joi.string().email(),
+        }),
     },
 
     // POST /v1/users
     createUser: {
-        body: {
-            email: Joi.string().email().required(),
-            password: Joi.string().min(6).max(128).required(),
-            name: Joi.string().max(128),
-            role: Joi.string().valid(User.roles),
-        },
-    },
-
-    // PUT /v1/users/:userId
-    replaceUser: {
-        body: {
-            email: Joi.string().email().required(),
-            password: Joi.string().min(6).max(128).required(),
-            name: Joi.string().max(128),
-            role: Joi.string().valid(User.roles),
-        },
-        params: {
-            userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),
-        },
+        body: Joi.object({
+            email: Joi.string()
+                .email()
+                .required(),
+            password: Joi.string()
+                .min(6)
+                .max(128)
+                .required(),
+            name: Joi.string()
+                .min(1)
+                .max(128),
+            role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
+        }),
     },
 
     // PATCH /v1/users/:userId
     updateUser: {
-        body: {
+        body: Joi.object({
             email: Joi.string().email(),
-            password: Joi.string().min(6).max(128),
+            password: Joi.string()
+                .min(6)
+                .max(128),
             name: Joi.string().max(128),
-            role: Joi.string().valid(User.roles),
-        },
-        params: {
-            userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),
-        },
+            role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
+        }),
+        params: Joi.object({
+            userId: Joi.string()
+                .regex(/^[a-fA-F0-9]{24}$/)
+                .required(),
+        }),
     },
-};
+    // PATCH /v1/users/profile
+    updateCurrentUser: {
+        body: Joi.object({
+            email: Joi.string().email(),
+            password: Joi.string()
+                .min(6)
+                .max(128),
+            name: Joi.string().max(128),
+            role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
+        }),
+    },
+}

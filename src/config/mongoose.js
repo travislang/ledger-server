@@ -31,6 +31,6 @@ exports.connect = () => {
             useUnifiedTopology: true,
             useFindAndModify: false,
         })
-        .catch(error => logger.error(`MongoDB initial connection error: ${error}`));
-    return mongoose.connection;
-};
+        .catch(error => logger.error(`MongoDB initial connection error: ${error}`))
+    return mongoose.connection
+}

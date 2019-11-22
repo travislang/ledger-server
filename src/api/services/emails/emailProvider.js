@@ -7,9 +7,9 @@ const transporter = nodemailer.createTransport({
     host: emailConfig.host,
     auth: {
         user: emailConfig.username,
-        pass: emailConfig.password
+        pass: emailConfig.password,
     },
-    secure: false // upgrades later with STARTTLS
+    secure: false, // upgrades later with STARTTLS
 })
 
 // verify connection configuration
@@ -25,25 +25,25 @@ exports.sendPasswordReset = async passwordResetObject => {
     const email = new Email({
         views: { root: __dirname },
         message: {
-            from: 'support@ledger.com'
+            from: 'support@ledger.com',
         },
         // uncomment below to send emails in development/test env:
         send: true,
-        transport: transporter
+        transport: transporter,
     })
 
     email
         .send({
             template: 'passwordReset',
             message: {
-                to: passwordResetObject.userEmail
+                to: passwordResetObject.userEmail,
             },
             locals: {
                 productName: 'Ledger',
                 // passwordResetUrl should be a URL to your app that displays a view where they
                 // can enter a new password along with passing the resetToken in the params
-                passwordResetUrl: `https://your-app/new-password/view?resetToken=${passwordResetObject.resetToken}`
-            }
+                passwordResetUrl: `https://your-app/new-password/view?resetToken=${passwordResetObject.resetToken}`,
+            },
         })
         .catch(err => console.error('error sending email', err))
 }
@@ -52,23 +52,23 @@ exports.sendPasswordChangeEmail = async user => {
     const email = new Email({
         views: { root: __dirname },
         message: {
-            from: 'support@ledger.com'
+            from: 'support@ledger.com',
         },
         // uncomment below to send emails in development/test env:
         send: true,
-        transport: transporter
+        transport: transporter,
     })
 
     email
         .send({
             template: 'passwordChange',
             message: {
-                to: user.email
+                to: user.email,
             },
             locals: {
                 productName: 'Ledger',
-                name: user.name
-            }
+                name: user.name,
+            },
         })
         .catch(err => console.error('error sending email', err))
 }

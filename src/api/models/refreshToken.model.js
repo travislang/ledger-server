@@ -6,19 +6,19 @@ const refreshTokenSchema = new mongoose.Schema({
     token: {
         type: String,
         required: true,
-        index: true
+        index: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
     },
     userEmail: {
         type: 'String',
         ref: 'User',
-        required: true
+        required: true,
     },
-    expires: { type: Date }
+    expires: { type: Date },
 })
 
 refreshTokenSchema.statics = {
@@ -33,11 +33,11 @@ refreshTokenSchema.statics = {
             token,
             userId,
             userEmail,
-            expires
+            expires,
         })
         await tokenObject.save()
         return tokenObject
-    }
+    },
 }
 
 const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema)

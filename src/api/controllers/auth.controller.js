@@ -18,7 +18,7 @@ async function generateTokenResponse(user, accessToken) {
         tokenType,
         accessToken,
         refreshToken: token,
-        expiresIn
+        expiresIn,
     }
 }
 
@@ -65,7 +65,7 @@ exports.refresh = async (req, res, next) => {
         const { email, refreshToken } = req.body
         const refreshObject = await RefreshToken.findOneAndRemove({
             userEmail: email,
-            token: refreshToken
+            token: refreshToken,
         })
         const { user, accessToken } = await User.findAndGenerateToken({ email, refreshObject })
         const response = await generateTokenResponse(user, accessToken)
@@ -88,7 +88,7 @@ exports.sendPasswordReset = async (req, res, next) => {
         }
         throw new APIError({
             status: httpStatus.UNAUTHORIZED,
-            message: 'No account found with that email'
+            message: 'No account found with that email',
         })
     } catch (error) {
         return next(error)
@@ -100,11 +100,11 @@ exports.resetPassword = async (req, res, next) => {
         const { email, password, resetToken } = req.body
         const resetTokenObject = await PasswordResetToken.findOneAndRemove({
             userEmail: email,
-            resetToken
+            resetToken,
         })
         const err = {
             status: httpStatus.UNAUTHORIZED,
-            isPublic: true
+            isPublic: true,
         }
         if (!resetTokenObject) {
             err.message = 'Cannot find matching reset token'

@@ -2,24 +2,23 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 const moment = require('moment')
 
-
 const passwordResetTokenSchema = new mongoose.Schema({
     resetToken: {
         type: String,
         required: true,
-        index: true
+        index: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
     },
     userEmail: {
         type: 'String',
         ref: 'User',
-        required: true
+        required: true,
     },
-    expires: { type: Date }
+    expires: { type: Date },
 })
 
 passwordResetTokenSchema.statics = {
@@ -34,11 +33,11 @@ passwordResetTokenSchema.statics = {
             resetToken,
             userId,
             userEmail,
-            expires
+            expires,
         })
         await ResetTokenObject.save()
         return ResetTokenObject
-    }
+    },
 }
 
 /**

@@ -2,15 +2,19 @@ const winston = require('winston')
 
 const logger = winston.createLogger({
     level: 'info',
-    format: winston.format.json(),
+    format: winston.format.combine(
+        winston.format.errors({ stack: true }),
+        winston.format.splat(),
+        winston.format.json(),
+    ),
     transports: [
         //
         // - Write to all logs with level `info` and below to `combined.log`
         // - Write all logs error (and below) to `error.log`.
         //
         new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' })
-    ]
+        new winston.transports.File({ filename: 'combined.log' }),
+    ],
 })
 
 //
@@ -20,15 +24,15 @@ const logger = winston.createLogger({
 if (process.env.NODE_ENV !== 'production') {
     logger.add(
         new winston.transports.Console({
-            format: winston.format.combine(winston.format.colorize(), winston.format.simple())
-        })
+            format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
+        }),
     )
 }
 
 logger.stream = {
     write: message => {
         logger.info(message.trim())
-    }
+    },
 }
 
 module.exports = logger

@@ -1,54 +1,85 @@
-const httpStatus = require('http-status');
-const passport = require('passport');
-const User = require('../models/user.model');
-const APIError = require('../utils/APIError');
+const passport = require('passport')
+const httpStatus = require('http-status')
+const APIError = require('../utils/APIError')
 
-const ADMIN = 'admin';
-const LOGGED_USER = '_loggedUser';
+const { roles } = require('../../config/accessControl')
 
-const handleJWT = (req, res, next, roles) => async (err, user, info) => {
-    const error = err || info;
-    const logIn = Promise.promisify(req.logIn);
+const authorizeRequest = (authorizedRoles = roles) => (req, res, next) => {
+    let convertedRoles = []
+
+    if (typeof authorizedRoles === 'string') {
+        convertedRoles.push(authorizedRoles)
+    } else {
+        convertedRoles = authorizedRoles
+    }
+
+    if (!convertedRoles.includes(req.user.role)) {
+        const apiError = new APIError({
+            message: 'Forbidden',
+            status: httpStatus.FORBIDDEN,
+        })
+        return next(apiError)
+    }
+    return next()
+}
+
+// const getPermission = (str, resource, userRole) => {
+//     switch (str) {
+//         case 'read':
+//             return accessControl.can(userRole).readAny(resource)
+//         case 'create':
+//             return accessControl.can(userRole).createAny(resource)
+//         case 'update':
+//             return accessControl.can(userRole).updateAny(resource)
+//         case 'delete':
+//             return accessControl.can(userRole).deleteAny(resource)
+//         default: {
+//             return {}
+//         }
+//     }
+// }
+
+// const verifyGrants = resources => (req, res, next) => {
+//     const resourcesArr = resources.split(':')
+//     const resource = resourcesArr[0]
+//     const permissionTypeStr = resourcesArr[1]
+
+//     const permissionType = getPermission(permissionTypeStr, resource, req.user.role)
+
+//     console.log('permissions', resource, permissionTypeStr, permissionType.granted)
+
+//     if (!permissionType.granted) {
+//         const apiError = new APIError({
+//             message: 'Forbidden',
+//             status: httpStatus.FORBIDDEN,
+//         })
+//         return next(apiError)
+//     }
+//     return next()
+// }
+
+const authenticateCallback = (req, res, next) => async (err, user, info) => {
+    const error = err || info
     const apiError = new APIError({
         message: error ? error.message : 'Unauthorized',
         status: httpStatus.UNAUTHORIZED,
         stack: error ? error.stack : undefined,
-    });
-
-    try {
-        if (error || !user) throw error;
-        await logIn(user, { session: false });
-    } catch (e) {
-        return next(apiError);
+    })
+    if (error || !user) {
+        return next(apiError)
     }
+    req.user = user
+    return next()
+}
 
-    if (roles === LOGGED_USER) {
-        if (user.role !== 'admin' && req.params.userId !== user._id.toString()) {
-            apiError.status = httpStatus.FORBIDDEN;
-            apiError.message = 'Forbidden';
-            return next(apiError);
-        }
-    } else if (!roles.includes(user.role)) {
-        apiError.status = httpStatus.FORBIDDEN;
-        apiError.message = 'Forbidden';
-        return next(apiError);
-    } else if (err || !user) {
-        return next(apiError);
-    }
+exports.authenticate = () => (req, res, next) =>
+    passport.authenticate('jwt', { session: false }, authenticateCallback(req, res, next))(
+        req,
+        res,
+        next,
+    )
 
-    req.user = user;
+exports.authorize = authorizeRequest
+// exports.verifyGrants = verifyGrants
 
-    return next();
-};
-
-exports.ADMIN = ADMIN;
-exports.LOGGED_USER = LOGGED_USER;
-
-exports.authorize = (roles = User.roles) => (req, res, next) =>
-    passport.authenticate(
-        'jwt', { session: false },
-        handleJWT(req, res, next, roles),
-    )(req, res, next);
-
-exports.oAuth = service =>
-    passport.authenticate(service, { session: false });
+exports.oAuth = service => passport.authenticate(service, { session: false })

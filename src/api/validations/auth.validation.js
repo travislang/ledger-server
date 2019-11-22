@@ -1,5 +1,4 @@
 const { Joi } = require('celebrate')
-const User = require('../models/user.model')
 
 module.exports = {
     // POST /v1/auth/register
@@ -13,8 +12,7 @@ module.exports = {
                 .min(6)
                 .max(128),
             name: Joi.string().max(128),
-            role: Joi.string().valid(User.roles)
-        })
+        }),
     },
 
     // POST /v1/auth/login
@@ -25,16 +23,16 @@ module.exports = {
                 .required(),
             password: Joi.string()
                 .required()
-                .max(128)
-        }).unknown()
+                .max(128),
+        }).unknown(),
     },
 
     // POST /v1/auth/facebook
     // POST /v1/auth/google
     oAuth: {
         body: Joi.object({
-            access_token: Joi.string().required()
-        })
+            access_token: Joi.string().required(),
+        }).unknown(),
     },
 
     // POST /v1/auth/refresh
@@ -43,8 +41,8 @@ module.exports = {
             email: Joi.string()
                 .email()
                 .required(),
-            refreshToken: Joi.string().required()
-        })
+            refreshToken: Joi.string().required(),
+        }),
     },
 
     // POST /v1/auth/send-password-reset
@@ -52,8 +50,8 @@ module.exports = {
         body: Joi.object({
             email: Joi.string()
                 .email()
-                .required()
-        }).unknown()
+                .required(),
+        }).unknown(),
     },
 
     // POST /v1/auth/reset-password
@@ -66,7 +64,7 @@ module.exports = {
                 .required()
                 .min(6)
                 .max(128),
-            resetToken: Joi.string().required()
-        })
-    }
+            resetToken: Joi.string().required(),
+        }),
+    },
 }
