@@ -1,7 +1,7 @@
 const express = require('express')
 const { celebrate } = require('celebrate')
 const controller = require('../../controllers/user.controller')
-const { authorize, authenticate, verifyGrants } = require('../../middlewares/auth')
+const { authorize, authenticate } = require('../../middlewares/auth')
 const { roleTypes } = require('../../../config/accessControl')
 const {
     listUsers,
@@ -24,12 +24,13 @@ router
     .route('/profile')
     .get(authenticate(), controller.currentUser)
     .patch(authenticate(), celebrate(updateCurrentUser), controller.updateCurrentUser)
+    .delete(authenticate(), controller.deleteCurrentUser)
 
 router
     .route('/:userId')
-    .all(authenticate())
-    .get(verifyGrants('user:read'), controller.get)
-    .patch(verifyGrants('user:update'), celebrate(updateUser), controller.update)
-    .delete(verifyGrants('user:delete'), controller.remove)
+    .all(authenticate(), authorize(roleTypes.ADMIN))
+    .get(controller.get)
+    .patch(celebrate(updateUser), controller.update)
+    .delete(controller.remove)
 
 module.exports = router

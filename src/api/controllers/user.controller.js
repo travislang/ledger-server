@@ -62,6 +62,17 @@ exports.remove = async (req, res, next) => {
     }
 }
 
+exports.deleteCurrentUser = async (req, res, next) => {
+    try {
+        const { user } = req
+        await user.remove()
+
+        res.status(httpStatus.NO_CONTENT).end()
+    } catch (err) {
+        next(err)
+    }
+}
+
 exports.updateCurrentUser = async (req, res, next) => {
     try {
         const omitRole = req.user.role !== 'admin' ? 'role' : ''

@@ -488,4 +488,20 @@ describe('Users API', async () => {
                 })
         })
     })
+
+    describe('DELETE /v1/users/profile', () => {
+        it('should delete current user', async () => {
+            delete dbUsers.jonSnow.password
+
+            return request(app)
+                .delete(`/v1/users/profile`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.NO_CONTENT)
+                .then(() => request(app).get('/v1/users'))
+                .then(async () => {
+                    const users = await User.find({})
+                    expect(users).to.have.lengthOf(1)
+                })
+        })
+    })
 })
