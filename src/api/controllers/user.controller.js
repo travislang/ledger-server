@@ -1,7 +1,6 @@
 const httpStatus = require('http-status')
 const { omit } = require('lodash')
 const User = require('../models/user.model')
-const { ac } = require('../../config/accessControl')
 
 exports.load = async (req, res, next, id) => {
     try {

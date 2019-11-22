@@ -13,12 +13,8 @@ const transporter = nodemailer.createTransport({
 })
 
 // verify connection configuration
-transporter.verify((error, success) => {
-    if (error) {
-        console.log('error with email connection', error)
-    } else {
-        console.log('Server is ready to take our emails')
-    }
+transporter.verify(error => {
+    if (error) console.log('error with email connection', error)
 })
 
 exports.sendPasswordReset = async passwordResetObject => {
