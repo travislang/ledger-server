@@ -1,17 +1,19 @@
 node_modules/
+.nyc_output/
 .vscode/
 coverage/
 
-.gitignore
-.eslintrc
+.dockerignore
 .editorconfig
-.gitlab-ci.yml
+.eslintrc
+.git
+.gitattributes
+.gitignore
+.prettierrc
 
 *.log
-Dockerfile*
+Dockerfile
 docker-compose*
-.dockerignore
-.git
-.gitignore
-README.md
+
 LICENSE
+README.md

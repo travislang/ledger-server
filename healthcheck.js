@@ -1,10 +1,9 @@
 const http = require('http')
-const { port } = require('./src/config/keys')
 
 const options = {
     timeout: 2000,
     host: 'localhost',
-    port: port || 8080,
+    port: process.env.PORT || 8080,
     path: '/v1/status',
 }
 

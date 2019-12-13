@@ -1,17 +1,16 @@
-# Ledger API
+# Ledger Server
+[![Build Status](https://travis-ci.org/danielfsousa/express-rest-es2017-boilerplate.svg?branch=master)](https://travis-ci.org/danielfsousa/express-rest-es2017-boilerplate) [![Coverage Status](https://coveralls.io/repos/github/danielfsousa/express-rest-es2017-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/danielfsousa/express-rest-es2017-boilerplate?branch=master)
+[![Github license](https://img.shields.io/badge/license-MIT-blue)]
 
+![Ledger logo](/public/images/ledger-logo.png)
 
 ## Features
 
- - No transpilers, just vanilla javascript
- - ES2017 latest features like Async/Await
- - CORS enabled
- - Uses [yarn](https://yarnpkg.com)
+ - ES2017 javascript
  - Express + MongoDB ([Mongoose](http://mongoosejs.com/))
  - Consistent coding styles with [editorconfig](http://editorconfig.org)
  - [Docker](https://www.docker.com/) support
- - Uses [helmet](https://github.com/helmetjs/helmet) to set some HTTP headers for security
- - Load environment variables from .env files with [dotenv](https://github.com/rolodato/dotenv-safe)
+ - Uses [helmet](https://github.com/helmetjs/helmet) to set some HTTP security headers
  - Request validation with [joi](https://github.com/hapijs/joi)
  - Gzip compression with [compression](https://github.com/expressjs/compression)
  - Linting with [eslint](http://eslint.org)
@@ -20,143 +19,89 @@
  - Git hooks with [husky](https://github.com/typicode/husky) 
  - Logging with [morgan](https://github.com/expressjs/morgan)
  - Authentication and Authorization with [passport](http://passportjs.org)
- - API documentation generation with [apidoc](http://apidocjs.com)
  - Continuous integration support with [travisCI](https://travis-ci.org)
- - Monitoring with [pm2](https://github.com/Unitech/pm2)
 
 ## Requirements
 
- - [Node v7.6+](https://nodejs.org/en/download/current/) or [Docker](https://www.docker.com/)
- - [Yarn](https://yarnpkg.com/en/docs/install)
+ - [Node v13.0+](https://nodejs.org/en/download/current/) or [Docker](https://www.docker.com/)
 
 ## Getting Started
 
-#### Clone the repo and make it yours:
+### Initialize project
 
 ```bash
-git clone --depth 1 https://github.com/danielfsousa/express-rest-es2017-boilerplate
-cd express-rest-es2017-boilerplate
-rm -rf .git
-```
+# Clone the repo
+git clone https://github.com/travislang/ledger-server.git
+cd ledger-server
 
-#### Install dependencies:
+# install dependencies
+npm install
 
-```bash
-yarn
-```
-
-#### Set environment variables:
-
-```bash
+# set enviornment variables
 cp .env.example .env
 ```
 
-## Running Locally
+### Running Locally
 
 ```bash
-yarn dev
+npm run dev
 ```
 
-## Running in Production
+### Running in Production
 
 ```bash
-yarn start
+npm start
 ```
 
-## Lint
+### Lint
 
 ```bash
 # lint code with ESLint
-yarn lint
+npm run lint
 
 # try to fix ESLint errors
-yarn lint:fix
-
-# lint and watch for changes
-yarn lint:watch
+npm run lint:fix
 ```
 
-## Test
+### Testing
 
 ```bash
 # run all tests with Mocha
-yarn test
+npm run test
 
 # run unit tests
-yarn test:unit
+npm run test:unit
 
 # run integration tests
-yarn test:integration
-
-# run all tests and watch for changes
-yarn test:watch
+npm run test:integration
 
 # open nyc test coverage reports
-yarn coverage
+npm run coverage
 ```
 
-## Validate
+### Validate
 
 ```bash
-# run lint and tests
-yarn validate
+# run lint and tests together
+npm run validate
 ```
 
-## Logs
+### Docker
 
-```bash
-# show logs in production
-pm2 logs
-```
-
-## Documentation
-
-```bash
-# generate and open api documentation
-yarn docs
-```
-
-## Docker
+You need to have [Docker](https://www.docker.com/) installed on your system to run docker locally
 
 ```bash
 # run container locally
-yarn docker:dev
+npm run docker:dev
 
 # run container in production
-yarn docker:prod
+npm run docker:prod
 
 # run tests
-yarn docker:test
+npm run docker:test
 ```
 
-## Deploy
-
-Set your server ip:
-
-```bash
-DEPLOY_SERVER=127.0.0.1
-```
-
-Replace my Docker username with yours:
-
-```bash
-nano deploy.sh
-```
-
-Run deploy script:
-
-```bash
-yarn deploy
-```
-
-## Tutorials
- - [Create API Documentation Using Squarespace](https://selfaware.blog/home/2018/6/23/api-documentation)
-
-## Inspirations
-
- - [KunalKapadia/express-mongoose-es6-rest-api](https://github.com/KunalKapadia/express-mongoose-es6-rest-api)
- - [diegohaz/rest](https://github.com/diegohaz/rest)
 
 ## License
 
-[MIT License](README.md) - [Daniel Sousa](https://github.com/danielfsousa)
+[MIT License](LICENSE.md) - [Travis Lang](https://github.com/travislang)

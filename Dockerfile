@@ -1,9 +1,12 @@
 FROM node:13-buster-slim
 
-EXPOSE 3000
-
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
+
+ARG PORT=3000
+ENV PORT $PORT
+
+EXPOSE $PORT
 
 WORKDIR /opt/ledger-server
 COPY package*.json ./
