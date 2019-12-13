@@ -1,8 +1,12 @@
 # Ledger Server
 [![Build Status](https://travis-ci.org/danielfsousa/express-rest-es2017-boilerplate.svg?branch=master)](https://travis-ci.org/danielfsousa/express-rest-es2017-boilerplate) [![Coverage Status](https://coveralls.io/repos/github/danielfsousa/express-rest-es2017-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/danielfsousa/express-rest-es2017-boilerplate?branch=master)
-[![Github license](https://img.shields.io/badge/license-MIT-blue)]
+![Github license](https://img.shields.io/badge/license-MIT-blue)
+
+
 
 ![Ledger logo](/public/images/ledger-logo.png)
+
+
 
 ## Features
 
