@@ -1,6 +1,9 @@
-version: "2"
+version: "3.7"
 services:
-  boilerplate-api:
+  api:
     command: npm run test
     environment:
+      - MONGO_URI_TESTS=mongodb://mongodb:27017/ledger-app-tests
       - NODE_ENV=test
+    healthcheck:
+        disable: true

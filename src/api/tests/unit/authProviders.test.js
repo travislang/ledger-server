@@ -30,6 +30,7 @@ describe('AuthProviders Functions', () => {
                             url: 'test.jpg',
                         },
                     },
+                    data: {},
                 },
             }
             const facebookOauthResponse = {
@@ -45,7 +46,7 @@ describe('AuthProviders Functions', () => {
 
             const oAuthResponse = await authProviders.facebook(accessToken)
 
-            expect(axios.get.calledOnce).to.be.true
+            expect(axios.get.calledTwice).to.be.true
             expect(authProviders.facebook.calledOnce).to.be.true
             expect(oAuthResponse).to.include(facebookOauthResponse)
         })

@@ -18,7 +18,6 @@ exports.facebook = async access_token => {
         },
     })
     const { data } = avatarResponse.data
-    console.log(data)
     return {
         service: 'facebook',
         avatar: data.url ? data.url : picture.data.url,

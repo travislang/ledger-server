@@ -7,6 +7,7 @@ const mongoose = require('./config/mongoose')
 mongoose.connect()
 
 // listen to requests
-app.listen(port, () => logger.info(`server started on port ${port} (${env})`))
+const server = app.listen(port, () => logger.info(`server started on port ${port} (${env})`))
 
-module.exports = app
+exports.app = app
+exports.server = server

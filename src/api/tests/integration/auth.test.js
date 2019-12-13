@@ -1,10 +1,11 @@
 /* eslint-disable arrow-body-style */
 const request = require('supertest')
 const httpStatus = require('http-status')
+const { disconnect } = require('../../../config/mongoose')
 const { expect } = require('chai')
 const sinon = require('sinon')
 const moment = require('moment')
-const app = require('../../../index')
+const { app } = require('../../../index')
 const User = require('../../models/user.model')
 const RefreshToken = require('../../models/refreshToken.model')
 const PasswordResetToken = require('../../models/passwordResetToken.model')
@@ -522,5 +523,10 @@ describe('Authentication API', () => {
                     expect(res.body.message).to.include('Reset token is expired')
                 })
         })
+    })
+
+    after(() => {
+        console.log('in after auth')
+        // disconnect()
     })
 })

@@ -5,11 +5,14 @@ const { mongo, env } = require('./keys')
 // Exit application on error
 mongoose.connection.on('error', err => {
     logger.error(`MongoDB connection error: ${err}`)
-    process.exit(-1)
+    process.exit(1)
 })
 
-mongoose.connection.once('opem', () => {
+mongoose.connection.once('open', () => {
     logger.info('connected to mongoDB')
+})
+mongoose.connection.once('close', () => {
+    logger.info('disconnected from mongoDB')
 })
 
 // print mongoose logs in dev env
@@ -17,12 +20,6 @@ if (env === 'development') {
     mongoose.set('debug', true)
 }
 
-/**
- * Connect to mongo db
- *
- * @returns {object} Mongoose connection
- * @public
- */
 exports.connect = () => {
     mongoose
         .connect(mongo.uri, {
@@ -33,4 +30,10 @@ exports.connect = () => {
         })
         .catch(error => logger.error(`MongoDB initial connection error: ${error}`))
     return mongoose.connection
+}
+
+exports.disconnect = () => {
+    mongoose.disconnect(err => {
+        if (err) logger.error(`error closing mongoDB connections, ${err}`)
+    })
 }
