@@ -43,6 +43,9 @@ passport.use('facebook', strategies.facebook)
 passport.use('google', strategies.google)
 passport.use('apple', strategies.apple)
 
+// add favicon support
+app.use('/favicon.ico', express.static('public/images/favicon.ico'))
+
 // mount api v1 routes
 app.use('/v1', routes)
 

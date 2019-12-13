@@ -9,10 +9,19 @@ exports.facebook = async access_token => {
     const params = { access_token, fields }
     const response = await axios.get(url, { params })
     const { id, name, email, picture } = response.data
-    logger.info('fb response', { data: response.data })
+    const avatarResponse = await axios.get(`${url}/picture`, {
+        params: {
+            access_token,
+            width: 200,
+            height: 200,
+            redirect: 0,
+        },
+    })
+    const { data } = avatarResponse.data
+    console.log(data)
     return {
         service: 'facebook',
-        avatar: picture.data.url,
+        avatar: data.url ? data.url : picture.data.url,
         id,
         name,
         email,

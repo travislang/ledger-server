@@ -172,7 +172,9 @@ userSchema.statics = {
         if (user) {
             user.services[service] = id
             if (!user.name) user.name = name
-            if (!user.avatar) user.avatar = avatar
+
+            if (avatar) user.avatar = avatar
+
             return user.save()
         }
         const password = uuidv4()

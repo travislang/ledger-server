@@ -1,14 +1,18 @@
-FROM node:8-alpine
+FROM node:13-buster-slim
 
 EXPOSE 3000
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
-RUN mkdir /app
-WORKDIR /app
-ADD package.json yarn.lock /app/
-RUN yarn --pure-lockfile
-ADD . /app
+WORKDIR /opt/ledger-server
+COPY package*.json ./
+RUN npm install --no-optional
+ENV PATH /opt/ledger-server/node_modules/.bin:$PATH
 
-CMD ["yarn", "docker:start"]
+HEALTHCHECK --interval=30s CMD node healthcheck.js
+
+WORKDIR /opt/ledger-server/app
+COPY . .
+
+CMD ["npm", "docker:start"]
