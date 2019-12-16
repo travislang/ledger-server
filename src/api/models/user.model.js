@@ -26,12 +26,6 @@ const userSchema = new mongoose.Schema(
             minlength: 6,
             maxlength: 128,
         },
-        name: {
-            type: String,
-            maxlength: 128,
-            index: true,
-            trim: true,
-        },
         services: {
             google: String,
             apple: String,
@@ -42,6 +36,20 @@ const userSchema = new mongoose.Schema(
             enum: roles,
             default: roleTypes.FREE,
         },
+        name: {
+            type: String,
+            maxlength: 128,
+            index: true,
+            trim: true,
+        },
+        gender: {
+            type: String,
+            enum: ['male', 'female'],
+            default: 'male',
+        },
+        age: Number,
+        weight: Number,
+        height: Number,
         avatar: {
             type: String,
             trim: true,
@@ -70,7 +78,18 @@ userSchema.pre('save', async function save(next) {
 userSchema.method({
     transform() {
         const transformed = {}
-        const fields = ['id', 'name', 'email', 'avatar', 'role', 'createdAt']
+        const fields = [
+            'id',
+            'name',
+            'email',
+            'age',
+            'weight',
+            'height',
+            'gender',
+            'avatar',
+            'role',
+            'createdAt',
+        ]
 
         fields.forEach(field => {
             transformed[field] = this[field]

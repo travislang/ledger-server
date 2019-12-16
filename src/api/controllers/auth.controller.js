@@ -63,6 +63,7 @@ exports.oAuth = async (req, res, next) => {
 exports.refresh = async (req, res, next) => {
     try {
         const { email, refreshToken } = req.body
+        console.log('in refresh token', req.body)
         const refreshObject = await RefreshToken.findOneAndRemove({
             userEmail: email,
             token: refreshToken,
