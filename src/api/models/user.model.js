@@ -11,6 +11,19 @@ const { env, jwtSecret, jwtExpirationInterval } = require('../../config/keys')
 
 const { roles, roleTypes } = require('../../config/accessControl')
 
+const trainingPlanSchema = new mongoose.Schema(
+    {
+        monday: { type: String, default: 'Rest Day' },
+        tuesday: { type: String, default: 'Rest Day' },
+        wednesday: { type: String, default: 'Rest Day' },
+        thursday: { type: String, default: 'Rest Day' },
+        friday: { type: String, default: 'Rest Day' },
+        saturday: { type: String, default: 'Rest Day' },
+        sunday: { type: String, default: 'Rest Day' },
+    },
+    { _id: false },
+)
+
 const userSchema = new mongoose.Schema(
     {
         email: {
@@ -54,6 +67,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+        trainingPlan: {
+            type: trainingPlanSchema,
+            default: trainingPlanSchema,
+        },
     },
     {
         timestamps: true,
@@ -88,6 +105,7 @@ userSchema.method({
             'gender',
             'avatar',
             'role',
+            'trainingPlan',
             'createdAt',
         ]
 

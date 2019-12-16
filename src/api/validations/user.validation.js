@@ -58,9 +58,10 @@ module.exports = {
             gender: Joi.string().valid('male', 'female'),
             age: Joi.number()
                 .min(1)
-                .max(99),
-            height: Joi.number(),
-            weight: Joi.number(),
+                .max(99)
+                .allow(null),
+            height: Joi.number().allow(null),
+            weight: Joi.number().allow(null),
             role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
         }),
     },

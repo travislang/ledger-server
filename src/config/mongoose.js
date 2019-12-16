@@ -1,10 +1,11 @@
+/* eslint-disable function-paren-newline */
 const mongoose = require('mongoose')
 const logger = require('./../config/logger')
 const { mongo, env } = require('./keys')
 
-// Exit application on error
+// Exit application on failed reconnect
 mongoose.connection.on('error', err => {
-    logger.error(`MongoDB connection error: ${err}`)
+    logger.error(`MongoDB connection error: ${err}.  Trying to reconnect...`)
     process.exit(1)
 })
 
