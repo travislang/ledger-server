@@ -1,12 +1,15 @@
 const express = require('express')
-const userRoutes = require('./user.route')
+
 const authRoutes = require('./auth.route')
+const userRoutes = require('./user.route')
+const workoutRoutes = require('./workout.route')
 
 const router = express.Router()
 
 router.get('/status', (req, res) => res.status(200).send('OK'))
 
-router.use('/users', userRoutes)
 router.use('/auth', authRoutes)
+router.use('/users', userRoutes)
+router.use('/workouts', workoutRoutes)
 
 module.exports = router

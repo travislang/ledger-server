@@ -63,6 +63,211 @@ module.exports = {
             height: Joi.number().allow(null),
             weight: Joi.number().allow(null),
             role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
+            trainingPlan: Joi.object({
+                Monday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+                Tuesday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+                Wednesday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+                Thursday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+                Friday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+                Saturday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+                Sunday: Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string()
+                        .min(1)
+                        .max(50)
+                        .required(),
+                    exercises: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            _id: Joi.string(),
+                            name: Joi.string().required(),
+                            type: Joi.string().required(),
+                            sets: Joi.array().items(
+                                Joi.object({
+                                    id: Joi.string(),
+                                    _id: Joi.string(),
+                                    reps: Joi.number()
+                                        .min(0)
+                                        .max(99)
+                                        .required(),
+                                    weight: Joi.number()
+                                        .min(0)
+                                        .max(999)
+                                        .required(),
+                                }).required(),
+                            ),
+                        }).required(),
+                    ),
+                }).allow(null),
+            }),
         }),
     },
 }

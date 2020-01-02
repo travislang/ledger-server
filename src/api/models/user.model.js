@@ -11,15 +11,65 @@ const { env, jwtSecret, jwtExpirationInterval } = require('../../config/keys')
 
 const { roles, roleTypes } = require('../../config/accessControl')
 
+const workoutSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        maxlength: 30,
+        trim: true,
+    },
+    exercises: [
+        {
+            name: {
+                type: String,
+                required: true,
+            },
+            type: {
+                type: String,
+                required: true,
+            },
+            sets: [
+                {
+                    reps: { type: Number, required: true },
+                    weight: { type: Number, required: true },
+                },
+            ],
+        },
+    ],
+})
+workoutSchema.set('toObject', { virtuals: true })
+workoutSchema.set('toJSON', { virtuals: true })
+
 const trainingPlanSchema = new mongoose.Schema(
     {
-        monday: { type: String, default: 'Rest Day' },
-        tuesday: { type: String, default: 'Rest Day' },
-        wednesday: { type: String, default: 'Rest Day' },
-        thursday: { type: String, default: 'Rest Day' },
-        friday: { type: String, default: 'Rest Day' },
-        saturday: { type: String, default: 'Rest Day' },
-        sunday: { type: String, default: 'Rest Day' },
+        Monday: {
+            type: workoutSchema,
+            default: null,
+        },
+        Tuesday: {
+            type: workoutSchema,
+            default: null,
+        },
+        Wednesday: {
+            type: workoutSchema,
+            default: null,
+        },
+        Thursday: {
+            type: workoutSchema,
+            default: null,
+        },
+        Friday: {
+            type: workoutSchema,
+            default: null,
+        },
+        Saturday: {
+            type: workoutSchema,
+            default: null,
+        },
+        Sunday: {
+            type: workoutSchema,
+            default: null,
+        },
     },
     { _id: false },
 )
@@ -71,6 +121,7 @@ const userSchema = new mongoose.Schema(
             type: trainingPlanSchema,
             default: trainingPlanSchema,
         },
+        workouts: [workoutSchema],
     },
     {
         timestamps: true,
@@ -106,6 +157,7 @@ userSchema.method({
             'avatar',
             'role',
             'trainingPlan',
+            'workouts',
             'createdAt',
         ]
 
@@ -137,6 +189,7 @@ userSchema.statics = {
         let user
 
         if (mongoose.Types.ObjectId.isValid(id)) {
+            // user = await this.findById(id).exec()
             user = await this.findById(id).exec()
         }
         if (user) {
@@ -205,7 +258,9 @@ userSchema.statics = {
     },
 
     async oAuthLogin({ service, id, email, name = null, avatar = null }) {
-        const user = await this.findOne({ $or: [{ [`services.${service}`]: id }, { email }] })
+        const user = await this.findOne({
+            $or: [{ [`services.${service}`]: id }, { email }],
+        })
         if (user) {
             user.services[service] = id
             if (!user.name) user.name = name
