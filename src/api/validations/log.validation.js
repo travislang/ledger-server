@@ -20,4 +20,10 @@ module.exports = {
             exercises: Joi.object().unknown(),
         }),
     },
+    // POST /v1/log/weight
+    addWeightLog: {
+        body: Joi.object({
+            weight: Joi.number().required(),
+        }),
+    },
 }

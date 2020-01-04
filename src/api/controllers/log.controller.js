@@ -1,6 +1,9 @@
 const httpStatus = require('http-status')
+const moment = require('moment')
+
 const Workout = require('../models/workout.model')
 const WorkoutLog = require('../models/workoutLog.model')
+const WeightLog = require('../models/weightLog.model')
 
 exports.addWorkoutLog = async (req, res, next) => {
     try {
@@ -31,6 +34,22 @@ exports.addWorkoutLog = async (req, res, next) => {
         const savedWorkoutLog = await workoutLog.save()
         console.log('saved log', savedWorkoutLog)
         res.status(httpStatus.OK).end()
+        // res.json(savedWorkout.transform())
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.addWeightLog = async (req, res, next) => {
+    try {
+        const weightLogEntry = new WeightLog({
+            weight: req.body.weight,
+            userId: req.user.id,
+        })
+
+        const savedweightLog = await weightLogEntry.save()
+        console.log('saved weight log', savedweightLog)
+        res.status(httpStatus.CREATED).end()
         // res.json(savedWorkout.transform())
     } catch (err) {
         next(err)
