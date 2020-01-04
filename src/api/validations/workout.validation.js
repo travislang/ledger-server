@@ -2,9 +2,17 @@ const { Joi } = require('celebrate')
 const { roleTypes } = require('../../config/accessControl')
 
 module.exports = {
+    // GET /v1/workouts
+    listWorkouts: {
+        query: Joi.object().keys({
+            limit: Joi.number()
+                .min(1)
+                .max(999),
+        }),
+    },
     // POST /v1/workouts
     addWorkout: {
-        body: Joi.object({
+        body: Joi.object().keys({
             name: Joi.string()
                 .min(1)
                 .max(50)
@@ -17,7 +25,6 @@ module.exports = {
                     sets: Joi.array().items(
                         Joi.object({
                             id: Joi.string(),
-                            _id: Joi.string(),
                             reps: Joi.number()
                                 .min(0)
                                 .max(99)
@@ -32,39 +39,12 @@ module.exports = {
             ),
         }),
     },
-
-    // PATCH /v1/users/:userId
-    updateUser: {
-        body: Joi.object({
-            email: Joi.string().email(),
-            password: Joi.string()
-                .min(6)
-                .max(128),
-            name: Joi.string().max(128),
-            role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
-        }),
-        params: Joi.object({
-            userId: Joi.string()
+    // DELETE /v1/workouts
+    deleteWorkout: {
+        body: Joi.object().keys({
+            workoutId: Joi.string()
                 .regex(/^[a-fA-F0-9]{24}$/)
                 .required(),
-        }),
-    },
-    // PATCH /v1/users/profile
-    updateCurrentUser: {
-        body: Joi.object({
-            email: Joi.string().email(),
-            password: Joi.string()
-                .min(6)
-                .max(128),
-            name: Joi.string().max(128),
-            gender: Joi.string().valid('male', 'female'),
-            age: Joi.number()
-                .min(1)
-                .max(99)
-                .allow(null),
-            height: Joi.number().allow(null),
-            weight: Joi.number().allow(null),
-            role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
         }),
     },
 }

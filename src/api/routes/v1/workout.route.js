@@ -3,14 +3,15 @@ const { celebrate } = require('celebrate')
 const controller = require('../../controllers/workout.controller')
 const { authorize, authenticate } = require('../../middlewares/auth')
 const { roleTypes } = require('../../../config/accessControl')
-const { addWorkout } = require('../../validations/workout.validation')
+const { listWorkouts, addWorkout, deleteWorkout } = require('../../validations/workout.validation')
 
 const router = express.Router()
 
 router
     .route('/')
     .all(authenticate())
-    // .get(celebrate(listUsers), controller.list)
+    .get(celebrate(listWorkouts), controller.listWorkouts)
     .post(celebrate(addWorkout), controller.addWorkout)
+    .delete(celebrate(deleteWorkout), controller.remove)
 
 module.exports = router

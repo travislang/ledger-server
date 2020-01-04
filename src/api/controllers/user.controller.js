@@ -12,7 +12,7 @@ exports.load = async (req, res, next, id) => {
     }
 }
 
-exports.currentUser = (req, res) => res.json(req.user.transform())
+exports.currentUser = async (req, res) => res.json(await req.user.transform())
 
 exports.list = async (req, res, next) => {
     try {
@@ -81,7 +81,7 @@ exports.updateCurrentUser = async (req, res, next) => {
         const savedUser = await user.save()
 
         res.status(httpStatus.OK)
-        res.json(savedUser.transform())
+        res.json(await savedUser.transform())
     } catch (err) {
         next(User.checkDuplicateEmail(err))
     }

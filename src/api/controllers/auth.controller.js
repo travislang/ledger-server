@@ -41,7 +41,7 @@ exports.login = async (req, res, next) => {
     try {
         const { user, accessToken } = await User.findAndGenerateToken(req.body)
         const token = await generateTokenResponse(user, accessToken)
-        const userObj = user.transform()
+        const userObj = await user.transform()
         return res.json({ token, user: userObj })
     } catch (error) {
         return next(error)
@@ -53,7 +53,7 @@ exports.oAuth = async (req, res, next) => {
         const { user } = req
         const accessToken = user.token()
         const token = await generateTokenResponse(user, accessToken)
-        const userTransformed = user.transform()
+        const userTransformed = await user.transform()
         return res.json({ token, user: userTransformed })
     } catch (error) {
         return next(error)

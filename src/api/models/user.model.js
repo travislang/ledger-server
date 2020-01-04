@@ -11,63 +11,41 @@ const { env, jwtSecret, jwtExpirationInterval } = require('../../config/keys')
 
 const { roles, roleTypes } = require('../../config/accessControl')
 
-const workoutSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        maxlength: 30,
-        trim: true,
-    },
-    exercises: [
-        {
-            name: {
-                type: String,
-                required: true,
-            },
-            type: {
-                type: String,
-                required: true,
-            },
-            sets: [
-                {
-                    reps: { type: Number, required: true },
-                    weight: { type: Number, required: true },
-                },
-            ],
-        },
-    ],
-})
-workoutSchema.set('toObject', { virtuals: true })
-workoutSchema.set('toJSON', { virtuals: true })
-
 const trainingPlanSchema = new mongoose.Schema(
     {
         Monday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
         Tuesday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
         Wednesday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
         Thursday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
         Friday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
         Saturday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
         Sunday: {
-            type: workoutSchema,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workout',
             default: null,
         },
     },
@@ -121,7 +99,6 @@ const userSchema = new mongoose.Schema(
             type: trainingPlanSchema,
             default: trainingPlanSchema,
         },
-        workouts: [workoutSchema],
     },
     {
         timestamps: true,
@@ -144,7 +121,7 @@ userSchema.pre('save', async function save(next) {
 })
 
 userSchema.method({
-    transform() {
+    async transform() {
         const transformed = {}
         const fields = [
             'id',
@@ -157,13 +134,13 @@ userSchema.method({
             'avatar',
             'role',
             'trainingPlan',
-            'workouts',
             'createdAt',
         ]
 
-        fields.forEach(field => {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const field of fields) {
             transformed[field] = this[field]
-        })
+        }
 
         return transformed
     },
