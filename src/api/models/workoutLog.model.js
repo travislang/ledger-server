@@ -5,7 +5,6 @@ const SetsLogSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Workout.exercises.sets',
         required: true,
-        index: true,
     },
     reps: { type: Number, required: true },
     weight: { type: Number, required: true },
@@ -28,7 +27,6 @@ const ExerciseLogSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Workout.exercises',
         required: true,
-        index: true,
     },
     sets: [SetsLogSchema],
 })
@@ -54,6 +52,7 @@ const WorkoutLogSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now,
+        index: true,
     },
     startTime: {
         type: Date,
@@ -62,6 +61,12 @@ const WorkoutLogSchema = new mongoose.Schema({
     endTime: {
         type: Date,
         required: true,
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        index: true,
     },
     workoutId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -75,7 +80,7 @@ const WorkoutLogSchema = new mongoose.Schema({
 WorkoutLogSchema.method({
     transform() {
         const transformed = {}
-        const fields = ['id', 'name', 'exercises', 'createdAt']
+        const fields = ['id', 'name', 'exercises', 'startTime', 'endTime', 'workoutId', 'date']
 
         fields.forEach(field => {
             if (field === 'exercises') {

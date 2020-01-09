@@ -16,6 +16,19 @@ const weightLogSchema = new mongoose.Schema({
         default: Date.now,
     },
 })
+weightLogSchema.method({
+    transform() {
+        console.log('in trnasform')
+        const transformed = {}
+        const fields = ['id', 'date', 'weight']
+
+        fields.forEach(field => {
+            transformed[field] = this[field]
+        })
+
+        return transformed
+    },
+})
 
 const weightLog = mongoose.model('weightLog', weightLogSchema)
 
