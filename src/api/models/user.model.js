@@ -121,7 +121,7 @@ userSchema.pre('save', async function save(next) {
 })
 
 userSchema.method({
-    async transform() {
+    transform() {
         const transformed = {}
         const fields = [
             'id',

@@ -28,12 +28,13 @@ const ExerciseLogSchema = new mongoose.Schema({
         ref: 'Workout.exercises',
         required: true,
     },
+    muscleType: { type: String, default: null },
     sets: [SetsLogSchema],
 })
 ExerciseLogSchema.method({
     transform() {
         const transformed = {}
-        const fields = ['id', 'name', 'type', 'sets']
+        const fields = ['id', 'exerciseId', 'muscleType', 'sets']
 
         fields.forEach(field => {
             if (field === 'sets') {
@@ -62,6 +63,10 @@ const WorkoutLogSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    averageRestTime: {
+        type: Number,
+        required: true,
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -80,7 +85,15 @@ const WorkoutLogSchema = new mongoose.Schema({
 WorkoutLogSchema.method({
     transform() {
         const transformed = {}
-        const fields = ['id', 'name', 'exercises', 'startTime', 'endTime', 'workoutId', 'date']
+        const fields = [
+            'id',
+            'exercises',
+            'startTime',
+            'endTime',
+            'averageRestTime',
+            'workoutId',
+            'date',
+        ]
 
         fields.forEach(field => {
             if (field === 'exercises') {

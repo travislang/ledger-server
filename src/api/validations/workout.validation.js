@@ -47,4 +47,38 @@ module.exports = {
                 .required(),
         }),
     },
+    // PATCH /v1/workouts/:workoutId
+    updateWorkout: {
+        body: Joi.object().keys({
+            name: Joi.string()
+                .min(1)
+                .max(50)
+                .required(),
+            exercises: Joi.array().items(
+                Joi.object({
+                    id: Joi.string(),
+                    name: Joi.string().required(),
+                    type: Joi.string().required(),
+                    sets: Joi.array().items(
+                        Joi.object({
+                            id: Joi.string(),
+                            reps: Joi.number()
+                                .min(0)
+                                .max(99)
+                                .required(),
+                            weight: Joi.number()
+                                .min(0)
+                                .max(999)
+                                .required(),
+                        }).required(),
+                    ),
+                }).required(),
+            ),
+        }),
+        params: Joi.object({
+            workoutId: Joi.string()
+                .regex(/^[a-fA-F0-9]{24}$/)
+                .required(),
+        }),
+    },
 }

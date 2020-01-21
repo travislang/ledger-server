@@ -1,93 +1,93 @@
 {
-  "name": "ledger-api",
-  "version": "1.0.0",
-  "description": "Express server for ledger app",
-  "author": "Travis Lang",
-  "main": "src/index.js",
-  "private": true,
-  "license": "MIT",
-  "engines": {
-    "node": ">=8",
-    "npm": "*"
-  },
-  "scripts": {
-    "start": "cross-env NODE_ENV=production node ./src/index.js",
-    "dev": "nodemon ./src/index.js",
-    "lint": "eslint ./src/ --ignore-path .gitignore --ignore-pattern internals/scripts",
-    "lint:fix": "npm run lint --fix",
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --timeout 20000 --recursive src/api/tests",
-    "test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
-    "test:integration": "cross-env NODE_ENV=test mocha --timeout 20000 src/api/tests/integration",
-    "coverage": "nyc report --reporter=lcov --reporter=text-summary",
-    "postcoverage": "open coverage/lcov-report/index.html",
-    "validate": "npm run lint && npm run test",
-    "deploy": "sh ./deploy.sh",
-    "docker:start": "cross-env NODE_ENV=production pm2-docker start ./src/index.js",
-    "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
-    "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
-    "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
+    "name": "ledger-api",
+    "version": "1.0.0",
+    "description": "Express server for ledger app",
+    "author": "Travis Lang",
+    "main": "src/index.js",
+    "private": true,
+    "license": "MIT",
+    "engines": {
+        "node": ">=8",
+        "npm": "*"
+    },
+    "scripts": {
+        "start": "cross-env NODE_ENV=production node ./src/index.js",
+        "dev": "nodemon ./src/index.js",
+        "lint": "eslint ./src/ --ignore-path .gitignore --ignore-pattern internals/scripts",
+        "lint:fix": "npm run lint --fix",
+        "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --timeout 20000 --recursive src/api/tests",
+        "test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
+        "test:integration": "cross-env NODE_ENV=test mocha --timeout 20000 src/api/tests/integration",
+        "coverage": "nyc report --reporter=lcov --reporter=text-summary",
+        "postcoverage": "open coverage/lcov-report/index.html",
+        "validate": "npm run lint && npm run test",
+        "deploy": "sh ./deploy.sh",
+        "docker:start": "cross-env NODE_ENV=production pm2-docker start ./src/index.js",
+        "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
+        "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
+        "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint"
+        }
+    },
+    "keywords": [
+        "express",
+        "node",
+        "node.js",
+        "mongodb"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/travislang/ledger-server.git"
+    },
+    "dependencies": {
+        "accesscontrol": "^2.2.1",
+        "axios": "^0.19.0",
+        "bcryptjs": "2.4.3",
+        "body-parser": "^1.17.0",
+        "celebrate": "^10.0.1",
+        "compression": "^1.6.2",
+        "cors": "^2.8.3",
+        "cross-env": "^5.0.1",
+        "dotenv-safe": "^6.0.0",
+        "email-templates": "^6.0.3",
+        "express": "^4.15.2",
+        "helmet": "^3.5.0",
+        "http-status": "^1.0.1",
+        "jsonwebtoken": "^8.5.1",
+        "lodash": "^4.17.4",
+        "method-override": "^3.0.0",
+        "moment": "^2.24.0",
+        "mongoose": "^5.2.17",
+        "morgan": "^1.8.1",
+        "node": "^13.3.0",
+        "nodemailer": "^6.3.1",
+        "passport": "^0.4.0",
+        "passport-http-bearer": "^1.0.1",
+        "passport-jwt": "4.0.0",
+        "pm2": "^3.0.0",
+        "pug": "^2.0.4",
+        "uuid": "^3.1.0",
+        "winston": "^3.1.0"
+    },
+    "devDependencies": {
+        "chai": "^4.1.0",
+        "chai-as-promised": "^7.1.1",
+        "coveralls": "^3.0.0",
+        "eslint": "^6.4.0",
+        "eslint-config-airbnb-base": "^12.0.1",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-plugin-import": "^2.2.0",
+        "eslint-plugin-prettier": "^3.1.1",
+        "husky": "^3.0.7",
+        "mocha": "^6.2.2",
+        "nodemon": "^1.11.0",
+        "nyc": "^14.1.1",
+        "prettier": "^1.19.1",
+        "sinon": "^7.5.0",
+        "sinon-chai": "^3.0.0",
+        "supertest": "^4.0.2"
     }
-  },
-  "keywords": [
-    "express",
-    "node",
-    "node.js",
-    "mongodb"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/travislang/ledger-server.git"
-  },
-  "dependencies": {
-    "accesscontrol": "^2.2.1",
-    "axios": "^0.19.0",
-    "bcryptjs": "2.4.3",
-    "body-parser": "^1.17.0",
-    "celebrate": "^10.0.1",
-    "compression": "^1.6.2",
-    "cors": "^2.8.3",
-    "cross-env": "^5.0.1",
-    "dotenv-safe": "^6.0.0",
-    "email-templates": "^6.0.3",
-    "express": "^4.15.2",
-    "helmet": "^3.5.0",
-    "http-status": "^1.0.1",
-    "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.4",
-    "method-override": "^3.0.0",
-    "moment": "^2.24.0",
-    "mongoose": "^5.2.17",
-    "morgan": "^1.8.1",
-    "node": "^13.3.0",
-    "nodemailer": "^6.3.1",
-    "passport": "^0.4.0",
-    "passport-http-bearer": "^1.0.1",
-    "passport-jwt": "4.0.0",
-    "pm2": "^3.0.0",
-    "pug": "^2.0.4",
-    "uuid": "^3.1.0",
-    "winston": "^3.1.0"
-  },
-  "devDependencies": {
-    "chai": "^4.1.0",
-    "chai-as-promised": "^7.1.1",
-    "coveralls": "^3.0.0",
-    "eslint": "^6.4.0",
-    "eslint-config-airbnb-base": "^12.0.1",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "husky": "^3.0.7",
-    "mocha": "^6.2.2",
-    "nodemon": "^1.11.0",
-    "nyc": "^14.1.1",
-    "prettier": "^1.19.1",
-    "sinon": "^7.5.0",
-    "sinon-chai": "^3.0.0",
-    "supertest": "^4.0.2"
-  }
 }

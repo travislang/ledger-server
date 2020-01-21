@@ -5,7 +5,7 @@ const { disconnect } = require('../../../config/mongoose')
 const { expect } = require('chai')
 const sinon = require('sinon')
 const bcrypt = require('bcryptjs')
-const { some, omitBy, isNil } = require('lodash')
+const { some, omitBy, isNil, isEqual } = require('lodash')
 const { app, server } = require('../../../index')
 const User = require('../../models/user.model')
 const JWT_EXPIRATION = require('../../../config/keys').jwtExpirationInterval
@@ -19,7 +19,8 @@ async function format(user) {
 
     // get user from database
     const dbUser = (await User.findOne({ email: user.email })).transform()
-
+    delete dbUser.createdAt
+    delete dbUser.trainingPlan
     // remove null and undefined properties
     return omitBy(dbUser, isNil)
 }
@@ -169,9 +170,13 @@ describe('Users API', () => {
                 .then(async res => {
                     const bran = await format(dbUsers.branStark)
                     const john = await format(dbUsers.jonSnow)
-                    // before comparing it is necessary to convert String to Date
-                    res.body[0].createdAt = new Date(res.body[0].createdAt)
-                    res.body[1].createdAt = new Date(res.body[1].createdAt)
+
+                    delete res.body[0].createdAt
+                    delete res.body[0].trainingPlan
+                    delete res.body[1].createdAt
+                    delete res.body[1].trainingPlan
+                    // res.body[0].createdAt = new Date(res.body[0].createdAt)
+                    // res.body[1].createdAt = new Date(res.body[1].createdAt)
 
                     const includesBranStark = some(res.body, bran)
                     const includesjonSnow = some(res.body, john)
@@ -506,7 +511,7 @@ describe('Users API', () => {
     })
 
     after(() => {
-        disconnect()
-        server.close()
+        // disconnect()
+        // server.close()
     })
 })
