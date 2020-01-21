@@ -1,8 +1,6 @@
 {
     "rules": {
-        "prettier/prettier": [
-            "error"
-        ],
+        "prettier/prettier": ["error"],
         "no-console": 0,
         "no-underscore-dangle": 0,
         "no-unused-vars": [
@@ -20,30 +18,18 @@
         "no-multi-str": 0,
         "semi": "off",
         "arrow-parens": "off",
-        "indent": [
-            "error",
-            4
-        ],
-        "comma-dangle": [
-            "error",
-            "only-multiline"
-        ],
-        "function-paren-newline": [
-            "error",
-            "consistent"
-        ]
+        "indent": ["error", 4],
+        "comma-dangle": ["error", "only-multiline"],
+        "function-paren-newline": ["error", "consistent"],
+        "no-param-reassign": ["warn"]
     },
     "env": {
         "node": true,
         "mocha": true
     },
     "parserOptions": {
-        "ecmaVersion": 8
+        "ecmaVersion": 9
     },
-    "plugins": [
-        "prettier"
-    ],
-    "extends": [
-        "airbnb-base", "prettier"
-    ]
+    "plugins": ["prettier"],
+    "extends": ["airbnb-base", "prettier"]
 }

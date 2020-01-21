@@ -390,7 +390,8 @@ describe('Workouts API', () => {
             const transformedWorkout = workout1FromDb.transform()
 
             const log = {}
-            for (let exercise of transformedWorkout.exercises) {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const exercise of transformedWorkout.exercises) {
                 log[exercise.id] = exercise.sets.map(set => ({
                     ...set,
                     reps: 8,
@@ -422,7 +423,8 @@ describe('Workouts API', () => {
             const transformedWorkout = workout1FromDb.transform()
 
             const log = {}
-            for (let exercise of transformedWorkout.exercises) {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const exercise of transformedWorkout.exercises) {
                 log[exercise.id] = exercise.sets.map(set => ({
                     ...set,
                     reps: 8,
@@ -450,7 +452,8 @@ describe('Workouts API', () => {
             const transformedWorkout = workout2FromDb.transform()
 
             const log = {}
-            for (let exercise of transformedWorkout.exercises) {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const exercise of transformedWorkout.exercises) {
                 log[exercise.id] = exercise.sets.map(set => ({
                     ...set,
                     reps: 8,
