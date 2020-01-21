@@ -1,31 +1,14 @@
 /* eslint-disable no-unused-expressions */
 const request = require('supertest')
 const httpStatus = require('http-status')
-const { disconnect } = require('../../../config/mongoose')
 const { expect } = require('chai')
-const sinon = require('sinon')
 const bcrypt = require('bcryptjs')
-const { omitBy, isNil } = require('lodash')
-const { app, server } = require('../../../index')
+const { app } = require('../../../index')
 const moment = require('moment')
 const User = require('../../models/user.model')
 const Workout = require('../../models/workout.model')
 const WeightLog = require('../../models/weightLog.model')
 const WorkoutLog = require('../../models/workoutLog.model')
-
-async function format(user) {
-    const formated = user
-
-    // delete password
-    delete formated.password
-
-    // get user from database
-    const dbUser = (await User.findOne({ email: user.email })).transform()
-    delete dbUser.createdAt
-    delete dbUser.trainingPlan
-    // remove null and undefined properties
-    return omitBy(dbUser, isNil)
-}
 
 describe('Workouts API', () => {
     let userAccessToken
