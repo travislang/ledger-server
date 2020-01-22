@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 const axios = require('axios')
-const logger = require('../../config/logger')
 const jwt = require('jsonwebtoken')
 
 exports.facebook = async access_token => {
