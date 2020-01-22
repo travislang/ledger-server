@@ -1,7 +1,6 @@
 /* eslint-disable arrow-body-style */
 const request = require('supertest')
 const httpStatus = require('http-status')
-const { disconnect } = require('../../../config/mongoose')
 const { expect } = require('chai')
 const sinon = require('sinon')
 const moment = require('moment')

@@ -1,14 +1,11 @@
 /* eslint-disable no-unused-expressions */
 const request = require('supertest')
 const httpStatus = require('http-status')
-const { disconnect } = require('../../../config/mongoose')
 const { expect } = require('chai')
-const sinon = require('sinon')
 const bcrypt = require('bcryptjs')
-const { some, omitBy, isNil, isEqual } = require('lodash')
-const { app, server } = require('../../../index')
+const { some, omitBy, isNil } = require('lodash')
+const { app } = require('../../../index')
 const User = require('../../models/user.model')
-const JWT_EXPIRATION = require('../../../config/keys').jwtExpirationInterval
 const { roleTypes } = require('../../../config/accessControl')
 
 async function format(user) {

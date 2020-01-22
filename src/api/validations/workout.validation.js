@@ -1,5 +1,4 @@
 const { Joi } = require('celebrate')
-const { roleTypes } = require('../../config/accessControl')
 
 module.exports = {
     // GET /v1/workouts
