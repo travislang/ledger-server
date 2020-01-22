@@ -89,8 +89,8 @@ describe('Logs API', () => {
             log1: {
                 startTime: moment()
                     .subtract(45, 'minutes')
-                    .toISOString(true),
-                endTime: moment().toISOString(true),
+                    .toISOString(),
+                endTime: moment().toISOString(),
                 averageRestTime: 123000,
             },
         }
@@ -138,8 +138,8 @@ describe('Logs API', () => {
         workoutLog = {
             startTime: moment()
                 .subtract(45, 'minutes')
-                .toISOString(true),
-            endTime: moment().toISOString(true),
+                .toISOString(),
+            endTime: moment().toISOString(),
             averageRestTime: 128000,
         }
 
@@ -220,10 +220,10 @@ describe('Logs API', () => {
             const dateRange = {
                 startDate: moment()
                     .subtract(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
                 endDate: moment()
                     .add(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
             }
             console.log('dates', dateRange.startDate, moment())
             return (
@@ -325,10 +325,10 @@ describe('Logs API', () => {
             const dateRange = {
                 startDate: moment()
                     .subtract(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
                 endDate: moment()
                     .add(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
             }
             return request(app)
                 .get(
@@ -472,10 +472,10 @@ describe('Logs API', () => {
             const dateRange = {
                 startDate: moment()
                     .subtract(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
                 endDate: moment()
                     .add(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
             }
             return request(app)
                 .get(
@@ -514,10 +514,10 @@ describe('Logs API', () => {
             const dateRange = {
                 startDate: moment()
                     .subtract(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
                 endDate: moment()
                     .add(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
             }
             return request(app)
                 .get(
@@ -539,10 +539,10 @@ describe('Logs API', () => {
             const dateRange = {
                 startDate: moment()
                     .subtract(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
                 endDate: moment()
                     .add(1, 'day')
-                    .toISOString(true),
+                    .toISOString(),
             }
             return request(app)
                 .get(
