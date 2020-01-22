@@ -225,21 +225,25 @@ describe('Logs API', () => {
                     .add(1, 'day')
                     .toISOString(true),
             }
-            return request(app)
-                .get(`/v1/log/weight?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`)
-                .set('Authorization', `Bearer ${userAccessToken}`)
-                .expect(httpStatus.OK)
-                .then(async res => {
-                    console.log('in get weight log res', res.body, res.body.errors)
-                    res.body[0].date = new Date(res.body[0].date).getTime()
+            return (
+                request(app)
+                    .get(
+                        `/v1/log/weight?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+                    )
+                    .set('Authorization', `Bearer ${userAccessToken}`)
+                    // .expect(httpStatus.OK)
+                    .then(async res => {
+                        console.log('in get weight log res', res.body, res.body.errors)
+                        res.body[0].date = new Date(res.body[0].date).getTime()
 
-                    expect(res.body).to.be.an('array')
-                    expect(res.body).to.have.lengthOf(1)
-                    expect(res.body[0]).to.have.property('date')
-                    expect(res.body[0].date).to.be.equal(dbWeightLogs.log1.date)
-                    expect(res.body[0]).to.have.property('weight')
-                    expect(res.body[0].weight).to.be.equal(dbWeightLogs.log1.weight)
-                })
+                        expect(res.body).to.be.an('array')
+                        expect(res.body).to.have.lengthOf(1)
+                        expect(res.body[0]).to.have.property('date')
+                        expect(res.body[0].date).to.be.equal(dbWeightLogs.log1.date)
+                        expect(res.body[0]).to.have.property('weight')
+                        expect(res.body[0].weight).to.be.equal(dbWeightLogs.log1.weight)
+                    })
+            )
         })
         it('should return error if date range is not given', async () => {
             return request(app)
