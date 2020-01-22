@@ -4,6 +4,7 @@ const moment = require('moment')
 const Workout = require('../models/workout.model')
 const WorkoutLog = require('../models/workoutLog.model')
 const WeightLog = require('../models/weightLog.model')
+const WorkoutStreak = require('../models/workoutStreak.model')
 
 exports.listWorkoutLogs = async (req, res, next) => {
     try {
@@ -154,6 +155,63 @@ exports.listAllWorkoutTotals = async (req, res, next) => {
 
         res.status(httpStatus.OK)
         res.json({ totalWorkouts: workoutLogs.length })
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.workoutStreak = async (req, res, next) => {
+    try {
+        const { date } = req.query
+
+        let workoutStreak = await WorkoutStreak.findOne({ userId: req.user.id })
+
+        if (!workoutStreak) {
+            workoutStreak = await WorkoutStreak.create({
+                userId: req.user.id,
+                streak: 0,
+                dateLastChecked: new Date(date),
+            })
+        }
+
+        const beginDate = moment(workoutStreak.dateLastChecked)
+            .startOf('day')
+            .toDate()
+        const endDate = moment(beginDate)
+            .endOf('day')
+            .toDate()
+
+        if (moment(date).isBetween(beginDate, endDate)) {
+            res.status(httpStatus.OK)
+            res.json(workoutStreak.transform())
+            return
+        }
+
+        const newStartDate = moment(date)
+            .subtract(1, 'day')
+            .startOf('day')
+            .toDate()
+        const newEndDate = moment(newStartDate)
+            .endOf('day')
+            .toDate()
+
+        const workoutLogs = await WorkoutLog.find({ userId: req.user.id })
+            .where('date')
+            .gte(newStartDate)
+            .lte(newEndDate)
+
+        if (workoutLogs.length) {
+            workoutStreak.streak += 1
+        } else if (req.user.trainingPlan[moment(newStartDate).format('dddd')]) {
+            workoutStreak.streak = 0
+        }
+
+        workoutStreak.dateLastChecked = date
+
+        await workoutStreak.save()
+
+        res.status(httpStatus.OK)
+        res.json(workoutStreak.transform())
     } catch (err) {
         next(err)
     }

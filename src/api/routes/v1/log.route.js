@@ -11,6 +11,7 @@ const {
     listAllWorkoutLogs,
     listAllWorkoutTotals,
     updateWeightLog,
+    workoutStreak,
 } = require('../../validations/log.validation')
 
 const router = express.Router()
@@ -25,6 +26,11 @@ router
     .route('/workouts/total')
     .all(authenticate())
     .get(celebrate(listAllWorkoutTotals), controller.listAllWorkoutTotals)
+
+router
+    .route('/workouts/streak')
+    .all(authenticate())
+    .get(celebrate(workoutStreak), controller.workoutStreak)
 
 router
     .route('/workouts')

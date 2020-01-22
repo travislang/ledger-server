@@ -44,6 +44,12 @@ module.exports = {
             endDate: Joi.date().required(),
         }),
     },
+    // GET /v1/log/workouts/streak
+    workoutStreak: {
+        query: Joi.object().keys({
+            date: Joi.date().required(),
+        }),
+    },
     // POST /v1/log/weight
     addWeightLog: {
         body: Joi.object({
