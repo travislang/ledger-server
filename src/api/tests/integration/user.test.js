@@ -186,24 +186,30 @@ describe('Users API', () => {
         })
 
         it('should get all users with pagination', () => {
-            return request(app)
-                .get('/v1/users')
-                .set('Authorization', `Bearer ${adminAccessToken}`)
-                .query({ page: 2, perPage: 1 })
-                .expect(httpStatus.OK)
-                .then(async res => {
-                    delete dbUsers.jonSnow.password
-                    const john = await format(dbUsers.jonSnow)
+            return (
+                request(app)
+                    .get('/v1/users')
+                    .set('Authorization', `Bearer ${adminAccessToken}`)
+                    .query({ page: 2, perPage: 1 })
+                    // .expect(httpStatus.OK)
+                    .then(async res => {
+                        console.log('in page res', res.body, res.body.errors)
+                        delete dbUsers.jonSnow.password
+                        const john = await format(dbUsers.jonSnow)
 
-                    // before comparing it is necessary to convert String to Date
-                    res.body[0].createdAt = new Date(res.body[0].createdAt)
+                        // before comparing it is necessary to convert String to Date
+                        // eslint-disable-next-line require-atomic-updates
+                        res.body[0].createdAt = new Date(res.body[0].createdAt)
 
-                    const includesjonSnow = some(res.body, john)
+                        const includesjonSnow = some(res.body, john)
 
-                    expect(res.body).to.be.an('array')
-                    expect(res.body).to.have.lengthOf(1)
-                    expect(includesjonSnow).to.be.true
-                })
+                        console.log('in page res 2', res.body, res.body.errors, john)
+
+                        expect(res.body).to.be.an('array')
+                        expect(res.body).to.have.lengthOf(1)
+                        expect(includesjonSnow).to.be.true
+                    })
+            )
         })
 
         it('should filter users', () => {
