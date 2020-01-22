@@ -9,6 +9,7 @@ const User = require('../../models/user.model')
 const Workout = require('../../models/workout.model')
 const WeightLog = require('../../models/weightLog.model')
 const WorkoutLog = require('../../models/workoutLog.model')
+const WorkoutStreak = require('../../models/workoutStreak.model')
 
 describe('Logs API', () => {
     let userAccessToken
@@ -16,6 +17,7 @@ describe('Logs API', () => {
     let dbWorkouts
     let dbWorkoutLogs
     let dbWeightLogs
+    let dbWorkoutStreak
     let workout
     let workoutLog
     let weightLog
@@ -103,6 +105,13 @@ describe('Logs API', () => {
             log2: {
                 date: Date.now(),
                 weight: 180,
+            },
+        }
+
+        dbWorkoutStreak = {
+            test: {
+                dateLastChecked: Date.now(),
+                streak: 0,
             },
         }
 
@@ -559,6 +568,54 @@ describe('Logs API', () => {
                     expect(field).to.be.equal('startDate')
                     expect(location).to.be.equal('query')
                     expect(messages).to.include('"startDate" is required')
+                })
+        })
+    })
+    describe('GET /v1/log/workouts/streak', () => {
+        it('should get current workout streak of 0 for user', async () => {
+            const date = moment().toISOString()
+
+            return request(app)
+                .get(`/v1/log/workouts/streak?date=${date}`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.OK)
+                .then(async res => {
+                    expect(res.body).to.be.an('object')
+                    expect(res.body).to.have.property('streak')
+                    expect(res.body.streak).to.be.equal(0)
+                })
+        })
+        it('should get current workout streak of 1 for user', async () => {
+            const user1FromDb = await User.findOne({
+                email: 'tlang505@gmail.com',
+            })
+            dbWorkoutStreak.test.userId = user1FromDb.id
+
+            await WorkoutStreak.insertMany([dbWorkoutStreak.test])
+            const date = moment()
+                .add(1, 'days')
+                .toISOString()
+
+            return request(app)
+                .get(`/v1/log/workouts/streak?date=${date}`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.OK)
+                .then(async res => {
+                    expect(res.body).to.be.an('object')
+                    expect(res.body).to.have.property('streak')
+                    expect(res.body.streak).to.be.equal(1)
+                })
+        })
+        it('should return error if date is not given', async () => {
+            return request(app)
+                .get(`/v1/log/workouts/streak`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.BAD_REQUEST)
+                .then(async res => {
+                    const { field, location, messages } = res.body.errors[0]
+                    expect(field).to.be.equal('date')
+                    expect(location).to.be.equal('query')
+                    expect(messages).to.include('"date" is required')
                 })
         })
     })
