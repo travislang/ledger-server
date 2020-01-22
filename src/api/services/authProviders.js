@@ -42,8 +42,6 @@ exports.google = async access_token => {
 }
 
 exports.apple = async access_token => {
-    logger.info('this is apple access token', { access_token })
-    logger.info(access_token)
     const decodedJwt = jwt.decode(access_token)
     const { email, sub } = decodedJwt
     return {
