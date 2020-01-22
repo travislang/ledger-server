@@ -4,7 +4,7 @@
 
 
 
-![Ledger logo](/public/images/ledger-text-full.png)
+![Ledger logo](/public/images/ledger-text-black.png)
 
 
 
