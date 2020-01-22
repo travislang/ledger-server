@@ -225,6 +225,7 @@ describe('Logs API', () => {
                     .add(1, 'day')
                     .toISOString(true),
             }
+            console.log('dates', dateRange.startDate, moment())
             return (
                 request(app)
                     .get(
