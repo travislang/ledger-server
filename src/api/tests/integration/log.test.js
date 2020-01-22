@@ -10,7 +10,7 @@ const Workout = require('../../models/workout.model')
 const WeightLog = require('../../models/weightLog.model')
 const WorkoutLog = require('../../models/workoutLog.model')
 
-describe('Workouts API', () => {
+describe('Logs API', () => {
     let userAccessToken
     let dbUsers
     let dbWorkouts
@@ -230,6 +230,7 @@ describe('Workouts API', () => {
                 .set('Authorization', `Bearer ${userAccessToken}`)
                 .expect(httpStatus.OK)
                 .then(async res => {
+                    console.log('in get weight log res', res.body, res.body.errors)
                     res.body[0].date = new Date(res.body[0].date).getTime()
 
                     expect(res.body).to.be.an('array')
@@ -331,13 +332,12 @@ describe('Workouts API', () => {
                 .set('Authorization', `Bearer ${userAccessToken}`)
                 .expect(httpStatus.OK)
                 .then(async res => {
+                    console.log('in get weight log res', res.body, res.body.errors)
                     const user1FromDb = await User.findOne({
                         email: 'tlang505@gmail.com',
                     })
                     const workoutLogFromDb = await WorkoutLog.findOne({ userId: user1FromDb.id })
                     const transformedWorkoutLog = workoutLogFromDb.transform()
-
-                    res.body[0].date = new Date(res.body[0].date).getTime()
 
                     expect(res.body).to.be.an('array')
                     expect(res.body).to.have.lengthOf(1)
