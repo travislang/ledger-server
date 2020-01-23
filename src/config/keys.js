@@ -1,5 +1,5 @@
 // import .env variables
-require('dotenv-safe').config()
+// require('dotenv-safe').config()
 
 module.exports = {
     env: process.env.NODE_ENV,
