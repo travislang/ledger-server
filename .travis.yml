@@ -8,7 +8,6 @@ node_js:
 
 services:
     - docker
-    - mongodb
 
 git:
     depth: 3
