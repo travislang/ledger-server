@@ -1,6 +1,21 @@
-version: "3.7"
+version: '3.7'
 services:
-  api:
-    command: npm run dev
-    environment:
-      - NODE_ENV=development
+    api:
+        command: npm run dev
+        environment:
+            - MONGO_URI=mongodb://mongodb:27017/ledger-app
+            - NODE_ENV=development
+        volumes:
+            - .:/opt/ledger-server/app
+            - notused:/opt/ledger-server/app/node_modules
+        ports:
+            - '3000:3000'
+        depends_on:
+            - mongodb
+
+    mongodb:
+        image: mongo
+        ports:
+            - '27017:27017'
+volumes:
+    notused:
