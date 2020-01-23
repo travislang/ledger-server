@@ -1,6 +1,30 @@
-version: "2"
+version: '3.7'
 services:
-  boilerplate-api:
-    command: yarn start
-    environment:
-      - NODE_ENV=production
+    api:
+        command: npm run start
+        image: travla5/ledger:latest
+        environment:
+            - NODE_ENV=production
+            - PORT=3000
+            - JWT_SECRET=bA2xcjpf8y5aSUFsNB2qN5yymUBSs6es3qHoFpGkec75RCeBvfew5345gvwe
+            - JWT_EXPIRATION_MINUTES=15
+            - MONGO_URI=mongodb://mongodb:27017/ledger-app
+            - MONGO_URI_TESTS=mongodb://mongodb:27017/ledger-app-tests
+            - EMAIL_PORT=587
+            - EMAIL_HOST=smtp-relay.sendinblue.com
+            - EMAIL_USERNAME=tlang50@icloud.com
+            - EMAIL_PASSWORD=
+        ports:
+            - '3000:3000'
+        depends_on:
+            - mongodb
+
+    mongodb:
+        image: mongo
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongo-data:/data/db
+volumes:
+    notused:
+    mongo-data:
