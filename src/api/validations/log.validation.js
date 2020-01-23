@@ -23,6 +23,15 @@ module.exports = {
             endDate: Joi.date().required(),
         }),
     },
+    // GET /v1/log/workout/recent
+    listRecentWorkoutLogs: {
+        query: Joi.object().keys({
+            workoutId: Joi.string()
+                .regex(/^[a-fA-F0-9]{24}$/)
+                .required(),
+            limit: Joi.number().required(),
+        }),
+    },
     // GET /v1/log/workouts
     listAllWorkoutLogs: {
         query: Joi.object().keys({

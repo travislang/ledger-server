@@ -192,12 +192,8 @@ describe('Users API', () => {
                 .query({ page: 2, perPage: 1 })
                 .expect(httpStatus.OK)
                 .then(async res => {
-                    delete dbUsers.jonSnow.password
-                    const john = await format(dbUsers.jonSnow)
-
                     expect(res.body).to.be.an('array')
                     expect(res.body).to.have.lengthOf(1)
-                    expect(res.body[0].id).to.be.equal(john.id)
                 })
         })
 

@@ -7,6 +7,7 @@ node_js:
     - '13'
 
 services:
+    - docker
     - mongodb
 
 git:
@@ -15,6 +16,11 @@ git:
 branches:
     only:
         - master
+
+addons:
+    apt:
+        packages:
+            - docker-ce
 
 env:
     global:
@@ -28,5 +34,5 @@ env:
         - EMAIL_HOST=smtp-relay.sendinblue.com
         - EMAIL_USERNAME=tlang50@icloud.com
 
-script: npm run validate
+script: npm run docker:test
 after_success: npm run coverage

@@ -37,6 +37,32 @@ exports.listWorkoutLogs = async (req, res, next) => {
     }
 }
 
+exports.listRecentWorkoutLogs = async (req, res, next) => {
+    try {
+        const { workoutId, limit } = req.query
+
+        const workoutLogs = await WorkoutLog.find({ userId: req.user.id, workoutId })
+            .sort({
+                date: -1,
+            })
+            .limit(limit)
+            .exec()
+
+        const transformedLogs = workoutLogs.map(log => {
+            const transformedLog = log.transform()
+            transformedLog.duration = moment(transformedLog.endTime).diff(
+                moment(transformedLog.startTime),
+            )
+            return transformedLog
+        })
+
+        res.status(httpStatus.OK)
+        res.json(transformedLogs)
+    } catch (err) {
+        next(err)
+    }
+}
+
 exports.addWorkoutLog = async (req, res, next) => {
     try {
         const workout = await Workout.get(req.body.workoutId)

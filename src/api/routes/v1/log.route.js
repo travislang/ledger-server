@@ -7,6 +7,7 @@ const {
     addWeightLog,
     listWeightLogs,
     listWorkoutLogs,
+    listRecentWorkoutLogs,
     listAllWorkoutLogs,
     listAllWorkoutTotals,
     updateWeightLog,
@@ -20,6 +21,11 @@ router
     .all(authenticate())
     .get(celebrate(listWorkoutLogs), controller.listWorkoutLogs)
     .post(celebrate(addWorkoutLog), controller.addWorkoutLog)
+
+router
+    .route('/workout/recent')
+    .all(authenticate())
+    .get(celebrate(listRecentWorkoutLogs), controller.listRecentWorkoutLogs)
 
 router
     .route('/workouts/total')

@@ -536,6 +536,64 @@ describe('Logs API', () => {
         })
     })
 
+    describe('GET /v1/log/workout/recent', () => {
+        it('should get users workout logs for workout with limit', async () => {
+            const user1FromDb = await User.findOne({
+                email: 'tlang505@gmail.com',
+            })
+            const workout1FromDb = await Workout.findOne({
+                userId: user1FromDb.id,
+            })
+
+            const limit = 1
+
+            return request(app)
+                .get(`/v1/log/workout/recent?limit=${limit}&workoutId=${workout1FromDb.id}`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.OK)
+                .then(async res => {
+                    expect(res.body).to.be.an('array')
+                    expect(res.body).to.have.lengthOf(1)
+                    expect(res.body[0]).to.have.property('workoutId')
+                    expect(res.body[0].workoutId).to.be.equal(workout1FromDb.id)
+                    expect(res.body[0]).to.have.property('exercises')
+                    expect(res.body[0].exercises).to.have.lengthOf(2)
+                })
+        })
+        it('should return error if limit is not given', async () => {
+            const user1FromDb = await User.findOne({
+                email: 'tlang505@gmail.com',
+            })
+            const workout1FromDb = await Workout.findOne({
+                userId: user1FromDb.id,
+            })
+            return request(app)
+                .get(`/v1/log/workout/recent?workoutId=${workout1FromDb.id}`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.BAD_REQUEST)
+                .then(async res => {
+                    const { field, location, messages } = res.body.errors[0]
+                    expect(field).to.be.equal('limit')
+                    expect(location).to.be.equal('query')
+                    expect(messages).to.include('"limit" is required')
+                })
+        })
+        it('should return error if workout ID is not given', async () => {
+            const limit = 10
+
+            return request(app)
+                .get(`/v1/log/workout?limit=${limit}`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.BAD_REQUEST)
+                .then(async res => {
+                    const { field, location, messages } = res.body.errors[0]
+                    expect(field).to.be.equal('workoutId')
+                    expect(location).to.be.equal('query')
+                    expect(messages).to.include('"workoutId" is required')
+                })
+        })
+    })
+
     describe('GET /v1/log/workouts/total', () => {
         it('should get total workout logs for user for date range', async () => {
             const dateRange = {
