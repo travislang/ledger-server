@@ -34,8 +34,6 @@ env:
         - EMAIL_USERNAME=tlang50@icloud.com
         - CI=true
 
-before_install:
-    - docker build -t travla5/ledger:latest .
 script: npm run docker:test
 after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
