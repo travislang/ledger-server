@@ -37,4 +37,6 @@ env:
 before_install:
     - docker build -t ledger-server .
 script: npm run docker:test
-after_success: docker images
+after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push travla5/ledger:ledger-server
