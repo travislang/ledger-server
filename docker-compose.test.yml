@@ -3,6 +3,6 @@ services:
     api:
         command: npm run test
         environment:
-            - MONGO_URI_TESTS=mongodb://localhost:27017/ledger-app-tests
+            - MONGO_URI_TESTS=mongodb://mongodb:27017/ledger-app-tests
         healthcheck:
             disable: true
