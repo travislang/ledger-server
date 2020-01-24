@@ -2,7 +2,7 @@ version: '3.7'
 services:
     api:
         image: travla5/ledger
-        command: npm run validate
+        command: npm run test
         environment:
             - NODE_ENV=test
             - PORT=3000
