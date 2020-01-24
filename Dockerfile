@@ -18,4 +18,4 @@ HEALTHCHECK --interval=30s CMD node healthcheck.js
 WORKDIR /opt/ledger-server/app
 COPY . .
 
-CMD ["npm", "docker:start"]
+CMD ["npm", "start"]

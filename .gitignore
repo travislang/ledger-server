@@ -43,4 +43,6 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-docker-compose.prod.yml
+docker-compose.production.yml
+
+live-deploy.sh
