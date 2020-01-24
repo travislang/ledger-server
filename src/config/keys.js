@@ -1,6 +1,7 @@
 // import .env variables
 // eslint-disable-next-line global-require
-if (process.env.NODE_ENV !== 'test') require('dotenv-safe').config()
+// if (process.env.NODE_ENV !== 'test') require('dotenv-safe').config()
+require('dotenv-safe').config()
 
 module.exports = {
     env: process.env.NODE_ENV,
