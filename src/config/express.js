@@ -49,8 +49,8 @@ app.use('/favicon.ico', express.static('public/images/favicon.ico'))
 // mount api v1 routes
 app.use('/v1', routes)
 
-// default image
-app.use('/', express.static('public/images/ledger-text-black.png'))
+// default page
+app.use('/', express.static('public'))
 
 // if error is not an instanceOf APIError, convert it.
 app.use(error.converter)
