@@ -198,7 +198,12 @@ describe('Workouts API', () => {
 
             const clonedWorkout = {
                 name: 'updated workout name',
-                exercises: [transformedWorkout.exercises[0]],
+                exercises: [
+                    {
+                        ...transformedWorkout.exercises[0],
+                        order: 0,
+                    },
+                ],
             }
 
             return request(app)

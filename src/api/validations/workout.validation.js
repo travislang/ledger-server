@@ -58,6 +58,7 @@ module.exports = {
                     id: Joi.string(),
                     name: Joi.string().required(),
                     type: Joi.string().required(),
+                    order: Joi.number().required(),
                     sets: Joi.array().items(
                         Joi.object({
                             id: Joi.string(),

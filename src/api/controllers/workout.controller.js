@@ -64,11 +64,14 @@ exports.updateWorkout = async (req, res, next) => {
         if (workout.userId.toString() === req.user.id) {
             const { name, exercises } = req.body
 
+            console.log('pre', workout.exercises, exercises)
+
             workout.name = name
 
             workout.exercises.forEach(exerciseObj => {
                 const newExercise = exercises.find(newExer => newExer.id === exerciseObj.id)
                 if (newExercise) {
+                    exerciseObj.order = newExercise.order
                     exerciseObj.sets.forEach(setObj => {
                         const newSet = newExercise.sets.find(newS => newS.id === setObj.id)
                         if (newSet) {
@@ -88,18 +91,21 @@ exports.updateWorkout = async (req, res, next) => {
                 }
             })
 
-            exercises.forEach((newExerciseObj, i) => {
+            exercises.forEach(newExerciseObj => {
                 const oldExerciseObj = workout.exercises.id(newExerciseObj.id)
                 if (!oldExerciseObj) {
                     workout.exercises.push(newExerciseObj)
-                    // workout.exercises.push({
-                    //     $each: [newExerciseObj],
-                    //     $position: i,
-                    // })
                 }
             })
 
+            await workout.save()
+
+            workout.exercises.sort((a, b) => a.order - b.order)
+
             const updatedWorkout = await workout.save()
+
+            console.log('post', workout.exercises)
+
             res.status(httpStatus.OK).json(updatedWorkout.transform())
         } else {
             res.status(httpStatus.UNAUTHORIZED).end()
