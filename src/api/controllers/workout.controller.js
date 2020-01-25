@@ -91,10 +91,11 @@ exports.updateWorkout = async (req, res, next) => {
             exercises.forEach((newExerciseObj, i) => {
                 const oldExerciseObj = workout.exercises.id(newExerciseObj.id)
                 if (!oldExerciseObj) {
-                    workout.exercises.push({
-                        $each: [newExerciseObj],
-                        $position: i,
-                    })
+                    workout.exercises.push(newExerciseObj)
+                    // workout.exercises.push({
+                    //     $each: [newExerciseObj],
+                    //     $position: i,
+                    // })
                 }
             })
 
