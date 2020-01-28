@@ -1,5 +1,6 @@
 const httpStatus = require('http-status')
 const Workout = require('../models/workout.model')
+const WorkoutLog = require('../models/workoutLog.model')
 
 exports.load = async (req, res, next, id) => {
     try {
@@ -46,6 +47,7 @@ exports.remove = async (req, res, next) => {
 
         if (workout.userId.toString() === req.user.id) {
             await Workout.findByIdAndDelete(workoutId)
+            await WorkoutLog.remove({ userId: req.user.id, workoutId: workout.id })
             res.status(httpStatus.NO_CONTENT).end()
         } else {
             res.status(httpStatus.UNAUTHORIZED).json(

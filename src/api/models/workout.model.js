@@ -91,6 +91,7 @@ WorkoutSchema.method({
 WorkoutSchema.statics.list = async function list(userId, limit) {
     return this.find({ userId })
         .limit(limit)
+        .sort({ date: -1 })
         .exec()
 }
 WorkoutSchema.statics.get = async function get(workoutId) {

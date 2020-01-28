@@ -32,7 +32,6 @@ env:
         - EMAIL_PORT=587
         - EMAIL_HOST=smtp-relay.sendinblue.com
         - EMAIL_USERNAME=tlang50@icloud.com
-        - CI=true
 
 script: npm run docker:test
 after_success:

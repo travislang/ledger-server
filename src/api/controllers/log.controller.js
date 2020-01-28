@@ -21,6 +21,7 @@ exports.listWorkoutLogs = async (req, res, next) => {
             .where('date')
             .gte(newStartDate)
             .lte(newEndDate)
+            .sort({ date: 1 })
 
         const transformedLogs = workoutLogs.map(log => {
             const transformedLog = log.transform()
@@ -43,7 +44,7 @@ exports.listRecentWorkoutLogs = async (req, res, next) => {
 
         const workoutLogs = await WorkoutLog.find({ userId: req.user.id, workoutId })
             .sort({
-                date: -1,
+                date: 1,
             })
             .limit(limit)
             .exec()
@@ -147,6 +148,7 @@ exports.listAllWorkoutLogs = async (req, res, next) => {
             .where('date')
             .gte(newStartDate)
             .lte(newEndDate)
+            .sort({ date: 1 })
 
         const transformedLogs = workoutLogs.map(log => {
             const transformedLog = log.transform()
@@ -258,6 +260,7 @@ exports.listWeightLog = async (req, res, next) => {
             .where('date')
             .gte(newStartDate)
             .lte(newEndDate)
+            .sort({ date: 1 })
 
         const transformedLogs = weightLogs.map(log => log.transform())
 
