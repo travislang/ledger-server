@@ -21,6 +21,8 @@ const app = express()
 // request logging. dev: console | production: file
 if (process.env.NODE_ENV !== 'test') app.use(morgan(logs))
 
+app.set('trust proxy', 1)
+
 // parse body params and attach them to req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
