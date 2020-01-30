@@ -7,6 +7,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 const passport = require('passport')
 const routes = require('../api/routes/v1')
+const staticRoutes = require('../static/routes')
 const { logs } = require('./keys')
 const strategies = require('./passport')
 const error = require('../api/middlewares/error')
@@ -48,6 +49,9 @@ app.use('/favicon.ico', express.static('public/images/favicon.ico'))
 
 // mount api v1 routes
 app.use('/v1', routes)
+
+// mount contact routes
+app.use('/static-routes', staticRoutes)
 
 // default page
 app.use('/', express.static('public'))

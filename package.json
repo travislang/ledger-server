@@ -30,6 +30,11 @@
             "pre-commit": "npm run lint"
         }
     },
+    "nyc": {
+        "exclude": [
+            "src/static/**/"
+        ]
+    },
     "keywords": [
         "express",
         "node",
