@@ -18,7 +18,6 @@ describe('Logs API', () => {
     let dbWorkoutLogs
     let dbWeightLogs
     let dbWorkoutStreak
-    let workout
     let workoutLog
     let weightLog
 
@@ -113,30 +112,6 @@ describe('Logs API', () => {
                 dateLastChecked: Date.now(),
                 streak: 0,
             },
-        }
-
-        workout = {
-            name: 'test workout 3',
-            exercises: [
-                {
-                    id: 'f52071fb-c4b6-4a73-ab28-d08cea7c9627',
-                    name: 'ab roller',
-                    type: 'abdominals',
-                    sets: [
-                        { reps: 5, weight: 50 },
-                        { reps: 8, weight: 55 },
-                    ],
-                },
-                {
-                    id: '99433ea8-4044-4094-9b42-fbd007980314',
-                    name: 'ab roller',
-                    type: 'abdominals',
-                    sets: [
-                        { reps: 5, weight: 50 },
-                        { reps: 8, weight: 55 },
-                    ],
-                },
-            ],
         }
 
         weightLog = {
