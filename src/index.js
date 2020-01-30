@@ -2,7 +2,7 @@ const { port, env } = require('./config/keys')
 const logger = require('./config/logger')
 const app = require('./config/express')
 const mongoose = require('./config/mongoose')
-const seedDb = require('./seed')
+// const seedDb = require('./seed')
 
 // open mongoose connection
 mongoose.connect()
