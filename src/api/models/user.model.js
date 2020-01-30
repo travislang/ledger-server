@@ -89,6 +89,7 @@ const userSchema = new mongoose.Schema(
             default: 'male',
         },
         age: Number,
+        startingWeight: Number,
         weight: Number,
         height: Number,
         avatar: {
@@ -128,6 +129,7 @@ userSchema.method({
             'name',
             'email',
             'age',
+            'startingWeight',
             'weight',
             'height',
             'gender',

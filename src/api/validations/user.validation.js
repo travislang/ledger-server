@@ -61,6 +61,7 @@ module.exports = {
                 .max(99)
                 .allow(null),
             height: Joi.number().allow(null),
+            startingWeight: Joi.number().allow(null),
             weight: Joi.number().allow(null),
             role: Joi.string().valid(roleTypes.FREE, roleTypes.PAID, roleTypes.ADMIN),
             trainingPlan: Joi.object().keys({
