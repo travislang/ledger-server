@@ -1,76 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Contact Us</title>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
         <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="../css/main.css" />
+        <link rel="stylesheet" type="text/css" href="../css/home.css" />
+        <title>Contact Us</title>
     </head>
     <body>
-        <div class="container-contact100">
-            <div class="wrap-contact100">
-                <form
-                    class="contact100-form validate-form"
-                    action="/static-routes/contact"
-                    id="contact-form"
-                    method="post"
-                    role="form"
+        <nav class="site-header sticky-top py-1">
+            <div
+                class="container d-flex flex-column flex-md-row justify-content-center align-items-center"
+            >
+                <a class="py-1 flex-grow-1" href="/" aria-label="Logo">
+                    <img
+                        src="../images/logo-small.png"
+                        class="mr-3"
+                        style="width: 35px; height: 35px;"
+                        alt="logo"
+                    />
+                </a>
+                <a class="py-2 px-2 mx-3 d-none d-md-inline-block" href="/">Features</a>
+                <a
+                    class="py-2 px-2 mx-3 d-none d-md-inline-block"
+                    href="https://www.apple.com/ios/app-store/"
+                    >Store</a
                 >
-                    <span class="contact100-form-title">
-                        Contact Us!
-                    </span>
+            </div>
+        </nav>
 
-                    <div class="wrap-input100 validate-input" data-validate="Name is required">
-                        <span class="label-input100">Your Name</span>
-                        <input
-                            class="input100"
-                            type="text"
-                            name="name"
-                            id="name"
-                            placeholder="Enter your name"
-                        />
-                        <span class="focus-input100"></span>
-                    </div>
-
-                    <div
-                        class="wrap-input100 validate-input"
-                        data-validate="Valid email is required: ex@abc.xyz"
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+            <div class="col-md-5 p-lg-5 mx-auto my-1">
+                <div class="d-md-flex flex-md-equal">
+                    <form
+                        action="/static-routes/contact"
+                        id="contact-form"
+                        method="post"
+                        role="form"
                     >
-                        <span class="label-input100">Email</span>
-                        <input
-                            class="input100"
-                            type="text"
-                            name="email"
-                            id="email"
-                            placeholder="Enter your email addess"
-                        />
-                        <span class="focus-input100"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input" data-validate="Message is required">
-                        <span class="label-input100">Message</span>
-                        <textarea
-                            class="input100"
-                            name="message"
-                            id="message"
-                            placeholder="Your message here..."
-                        ></textarea>
-                        <span class="focus-input100"></span>
-                    </div>
-
-                    <div class="container-contact100-form-btn">
-                        <div class="wrap-contact100-form-btn">
-                            <div class="contact100-form-bgbtn"></div>
-                            <button class="contact100-form-btn">
-                                <span>
-                                    Submit
-                                    <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                                </span>
-                            </button>
+                        <p class="display-3 font-weight-normal">LΞDGΞR</p>
+                        <p class="display-4 font-weight-lighter mb-5">Contact Us</p>
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input
+                                required
+                                type="text"
+                                class="form-control"
+                                id="name"
+                                aria-describedby="emailHelp"
+                            />
                         </div>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input
+                                required
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                aria-describedby="emailHelp"
+                            />
+                            <small id="emailHelp" class="form-text text-muted"
+                                >We'll never share your email with anyone else.</small
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message">
+Please enter your message here</textarea
+                            >
+                        </div>
+                        <div class="form-group form-check">
+                            <input required type="checkbox" class="form-check-input" id="terms" />
+                            <label class="form-check-label" for="terms"
+                                >Agree To Terms & Conditions</label
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
+
+        <footer class="container py-5">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img
+                        src="../images/ledger-logo-black.png"
+                        class="my-3"
+                        style="width: 25px; height: 25px;"
+                        alt="logo"
+                    />
+                    <small class="d-block mb-3 text-muted">&copy; 2020-2021</small>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Features</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="/">Custom workouts</a></li>
+                        <li>
+                            <a class="text-muted" href="/">Individual workout stats</a>
+                        </li>
+                        <li><a class="text-muted" href="/">Weight tracking</a></li>
+                        <li><a class="text-muted" href="/">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="/">Home</a></li>
+                        <li><a class="text-muted" href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="https://travislang.io">Developer</a></li>
+                        <li><a class="text-muted" href="/privacy-policy">Privacy</a></li>
+                        <li><a class="text-muted" href="/terms">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"
+        ></script>
     </body>
 </html>
