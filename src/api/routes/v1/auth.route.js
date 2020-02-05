@@ -10,6 +10,19 @@ const {
     sendPasswordReset,
     resetPassword,
 } = require('../../validations/auth.validation')
+const rateLimit = require('express-rate-limit')
+
+const sendResetPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour window
+    max: 5, // start blocking after 5 requests
+    message: 'Too many forms submitted from this IP, please try again after an hour',
+})
+
+const resetPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour window
+    max: 5, // start blocking after 5 requests
+    message: 'Too many forms submitted from this IP, please try again after an hour',
+})
 
 const router = express.Router()
 
@@ -21,9 +34,11 @@ router.route('/refresh-token').post(celebrate(refresh), controller.refresh)
 
 router
     .route('/send-password-reset')
-    .post(celebrate(sendPasswordReset), controller.sendPasswordReset)
+    .post(celebrate(sendPasswordReset), sendResetPasswordLimiter, controller.sendPasswordReset)
 
-router.route('/reset-password').post(celebrate(resetPassword), controller.resetPassword)
+router
+    .route('/reset-password')
+    .post(celebrate(resetPassword), resetPasswordLimiter, controller.resetPassword)
 
 router.route('/facebook').post(celebrate(oAuth), oAuthLogin('facebook'), controller.oAuth)
 
