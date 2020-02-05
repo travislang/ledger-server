@@ -1,5 +1,4 @@
 const httpStatus = require('http-status')
-const moment = require('moment')
 
 const nodemailer = require('nodemailer')
 const { emailConfig } = require('../../config/keys')
