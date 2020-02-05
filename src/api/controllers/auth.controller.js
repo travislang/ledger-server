@@ -103,7 +103,6 @@ exports.sendPasswordReset = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
     try {
         const { email, password, resetToken } = req.body
-        console.log('eee static', email, password, resetToken)
         const resetTokenObject = await PasswordResetToken.findOneAndRemove({
             userEmail: email,
             resetToken,

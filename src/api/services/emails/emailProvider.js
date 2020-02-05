@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer')
 const { emailConfig } = require('../../../config/keys')
 const Email = require('email-templates')
+const path = require('path')
 
 const transporter = nodemailer.createTransport({
     port: emailConfig.port,
@@ -17,15 +18,22 @@ transporter.verify(error => {
     if (error) console.log('error with email connection', error)
 })
 
-exports.sendPasswordReset = async passwordResetObject => {
+const sendPasswordReset = async passwordResetObject => {
     const email = new Email({
         views: { root: __dirname },
         message: {
             from: 'support@ledger.com',
         },
         // uncomment below to send emails in development/test env:
-        send: true,
+        // send: true,
         transport: transporter,
+        juice: true,
+        juiceResources: {
+            preserveImportant: true,
+            webResources: {
+                relativeTo: __dirname,
+            },
+        },
     })
 
     email
@@ -43,16 +51,24 @@ exports.sendPasswordReset = async passwordResetObject => {
         })
         .catch(err => console.error('error sending email', err))
 }
+exports.sendPasswordReset = sendPasswordReset
 
-exports.sendPasswordChangeEmail = async user => {
+const sendPasswordChangeEmail = async user => {
     const email = new Email({
         views: { root: __dirname },
         message: {
             from: 'support@ledger.com',
         },
         // uncomment below to send emails in development/test env:
-        send: true,
+        // send: true,
         transport: transporter,
+        juice: true,
+        juiceResources: {
+            preserveImportant: true,
+            webResources: {
+                relativeTo: __dirname,
+            },
+        },
     })
 
     email
@@ -68,3 +84,5 @@ exports.sendPasswordChangeEmail = async user => {
         })
         .catch(err => console.error('error sending email', err))
 }
+
+exports.sendPasswordChangeEmail = sendPasswordChangeEmail
