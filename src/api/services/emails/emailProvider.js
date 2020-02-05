@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer')
 const { emailConfig } = require('../../../config/keys')
 const Email = require('email-templates')
-const path = require('path')
 
 const transporter = nodemailer.createTransport({
     port: emailConfig.port,
