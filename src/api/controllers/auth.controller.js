@@ -64,14 +64,18 @@ exports.oAuth = async (req, res, next) => {
 exports.refresh = async (req, res, next) => {
     try {
         const { email, refreshToken } = req.body
+        console.log('refresh 1', email, refreshToken)
         const refreshObject = await RefreshToken.findOneAndRemove({
             userEmail: email,
             token: refreshToken,
         })
+        // console.log('refresh', email, refreshToken, refreshObject)
         const { user, accessToken } = await User.findAndGenerateToken({ email, refreshObject })
         const response = await generateTokenResponse(user, accessToken)
+        console.log('ggg', response)
         return res.json(response)
     } catch (error) {
+        console.log('in error', error)
         return next(error)
     }
 }
@@ -99,6 +103,7 @@ exports.sendPasswordReset = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
     try {
         const { email, password, resetToken } = req.body
+        console.log('eee static', email, password, resetToken)
         const resetTokenObject = await PasswordResetToken.findOneAndRemove({
             userEmail: email,
             resetToken,
