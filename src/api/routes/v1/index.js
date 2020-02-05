@@ -5,6 +5,8 @@ const userRoutes = require('./user.route')
 const workoutRoutes = require('./workout.route')
 const logRoutes = require('./log.route')
 
+const extraRoutes = require('./extra.route')
+
 const router = express.Router()
 
 router.get('/status', (req, res) => res.status(200).send('OK'))
@@ -13,5 +15,6 @@ router.use('/auth', authRoutes)
 router.use('/users', userRoutes)
 router.use('/workouts', workoutRoutes)
 router.use('/log', logRoutes)
+router.use('/extra', extraRoutes)
 
 module.exports = router
