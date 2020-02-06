@@ -24,6 +24,24 @@ exports.list = async (req, res, next) => {
     }
 }
 
+exports.userTotals = async (req, res, next) => {
+    try {
+        const totalUsers = await User.countDocuments({})
+        const totalFreeUsers = await User.countDocuments({ role: 'free' })
+        const totalPaidUsers = await User.countDocuments({ role: 'paid' })
+        const totalAdminUsers = await User.countDocuments({ role: 'admin' })
+
+        res.json({
+            total: totalUsers,
+            free: totalFreeUsers,
+            paid: totalPaidUsers,
+            admin: totalAdminUsers,
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 exports.create = async (req, res, next) => {
     try {
         const user = new User(req.body)

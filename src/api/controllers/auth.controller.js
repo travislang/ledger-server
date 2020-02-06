@@ -120,6 +120,7 @@ exports.resetPassword = async (req, res, next) => {
             throw new APIError(err)
         }
         const user = await User.findOne({ email: resetTokenObject.userEmail }).exec()
+        console.log('user', user, resetTokenObject)
         user.password = password
         await user.save()
         emailProvider.sendPasswordChangeEmail(user)

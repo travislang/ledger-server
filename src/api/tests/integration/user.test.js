@@ -258,6 +258,37 @@ describe('Users API', () => {
         })
     })
 
+    describe('GET /v1/users/totals', () => {
+        it('should get all users totals', () => {
+            return request(app)
+                .get('/v1/users/totals')
+                .set('Authorization', `Bearer ${adminAccessToken}`)
+                .expect(httpStatus.OK)
+                .then(async res => {
+                    expect(res.body).to.be.an('object')
+                    expect(res.body).to.have.property('total')
+                    expect(res.body.total).to.be.equal(2)
+                    expect(res.body).to.have.property('free')
+                    expect(res.body.free).to.be.equal(1)
+                    expect(res.body).to.have.property('paid')
+                    expect(res.body.paid).to.be.equal(0)
+                    expect(res.body).to.have.property('admin')
+                    expect(res.body.admin).to.be.equal(1)
+                })
+        })
+
+        it('should report error if user is not an admin', () => {
+            return request(app)
+                .get('/v1/users/totals')
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.FORBIDDEN)
+                .then(res => {
+                    expect(res.body.code).to.be.equal(httpStatus.FORBIDDEN)
+                    expect(res.body.message).to.be.equal('Forbidden')
+                })
+        })
+    })
+
     describe('GET /v1/users/:userId', () => {
         it('should get user by queried userId', async () => {
             const id = (await User.findOne({}))._id

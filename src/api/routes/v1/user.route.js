@@ -21,6 +21,11 @@ router
     .post(celebrate(createUser), controller.create)
 
 router
+    .route('/totals')
+    .all(authenticate(), authorize(roleTypes.ADMIN))
+    .get(controller.userTotals)
+
+router
     .route('/profile')
     .get(authenticate(), controller.currentUser)
     .patch(authenticate(), celebrate(updateCurrentUser), controller.updateCurrentUser)
