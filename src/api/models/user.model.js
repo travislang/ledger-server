@@ -210,7 +210,11 @@ userSchema.statics = {
     list({ page = 1, perPage = 30, name, email }) {
         const options = omitBy({ name, email }, isNil)
 
-        return this.find(options)
+        const searchQuery = {}
+        if (options.name) searchQuery.name = { $regex: options.name, $options: 'i' }
+        if (options.email) searchQuery.email = { $regex: options.email, $options: 'i' }
+
+        return this.find(searchQuery)
             .sort({ createdAt: -1 })
             .skip(perPage * (page - 1))
             .limit(perPage)

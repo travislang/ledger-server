@@ -10,7 +10,7 @@ module.exports = {
                 .min(1)
                 .max(100),
             name: Joi.string(),
-            email: Joi.string().email(),
+            email: Joi.string(),
         }),
     },
 
