@@ -4,11 +4,6 @@ const app = require('./config/express')
 const mongoose = require('./config/mongoose')
 // const seedDb = require('./seed')
 
-process.env.TZ = 'America/New_York'
-
-const d = new Date()
-console.log('date', d, d.toLocaleTimeString())
-
 // open mongoose connection
 mongoose.connect()
 
