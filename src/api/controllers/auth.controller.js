@@ -64,7 +64,6 @@ exports.oAuth = async (req, res, next) => {
 exports.refresh = async (req, res, next) => {
     try {
         const { email, refreshToken } = req.body
-        console.log('refresh 1', email, refreshToken)
         const refreshObject = await RefreshToken.findOneAndRemove({
             userEmail: email,
             token: refreshToken,
@@ -72,7 +71,6 @@ exports.refresh = async (req, res, next) => {
         // console.log('refresh', email, refreshToken, refreshObject)
         const { user, accessToken } = await User.findAndGenerateToken({ email, refreshObject })
         const response = await generateTokenResponse(user, accessToken)
-        console.log('ggg', response)
         return res.json(response)
     } catch (error) {
         console.log('in error', error)

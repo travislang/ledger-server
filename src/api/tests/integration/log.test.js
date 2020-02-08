@@ -109,7 +109,9 @@ describe('Logs API', () => {
 
         dbWorkoutStreak = {
             test: {
-                dateLastChecked: Date.now(),
+                dateLastChecked: moment()
+                    .startOf('day')
+                    .toDate(),
                 streak: 0,
             },
         }
@@ -606,10 +608,13 @@ describe('Logs API', () => {
     })
     describe('GET /v1/log/workouts/streak', () => {
         it('should get current workout streak of 0 for user', async () => {
-            const date = moment().toISOString()
+            const date = moment()
+                .startOf('day')
+                .toISOString()
+            const yesterday = moment().format('dddd')
 
             return request(app)
-                .get(`/v1/log/workouts/streak?date=${date}`)
+                .get(`/v1/log/workouts/streak?date=${date}&yesterdayText=${yesterday}`)
                 .set('Authorization', `Bearer ${userAccessToken}`)
                 .expect(httpStatus.OK)
                 .then(async res => {
@@ -626,11 +631,14 @@ describe('Logs API', () => {
 
             await WorkoutStreak.insertMany([dbWorkoutStreak.test])
             const date = moment()
+                .startOf('day')
                 .add(1, 'days')
                 .toISOString()
 
+            const yesterday = moment().format('dddd')
+
             return request(app)
-                .get(`/v1/log/workouts/streak?date=${date}`)
+                .get(`/v1/log/workouts/streak?date=${date}&yesterdayText=${yesterday}`)
                 .set('Authorization', `Bearer ${userAccessToken}`)
                 .expect(httpStatus.OK)
                 .then(async res => {
@@ -640,8 +648,10 @@ describe('Logs API', () => {
                 })
         })
         it('should return error if date is not given', async () => {
+            const yesterday = moment().format('dddd')
+
             return request(app)
-                .get(`/v1/log/workouts/streak`)
+                .get(`/v1/log/workouts/streak?yesterdayText=${yesterday}`)
                 .set('Authorization', `Bearer ${userAccessToken}`)
                 .expect(httpStatus.BAD_REQUEST)
                 .then(async res => {
@@ -649,6 +659,22 @@ describe('Logs API', () => {
                     expect(field).to.be.equal('date')
                     expect(location).to.be.equal('query')
                     expect(messages).to.include('"date" is required')
+                })
+        })
+        it('should return error if yesterday text is not given', async () => {
+            const date = moment()
+                .add(1, 'days')
+                .toISOString()
+
+            return request(app)
+                .get(`/v1/log/workouts/streak?date=${date}`)
+                .set('Authorization', `Bearer ${userAccessToken}`)
+                .expect(httpStatus.BAD_REQUEST)
+                .then(async res => {
+                    const { field, location, messages } = res.body.errors[0]
+                    expect(field).to.be.equal('yesterdayText')
+                    expect(location).to.be.equal('query')
+                    expect(messages).to.include('"yesterdayText" is required')
                 })
         })
     })

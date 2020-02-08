@@ -57,6 +57,7 @@ module.exports = {
     workoutStreak: {
         query: Joi.object().keys({
             date: Joi.date().required(),
+            yesterdayText: Joi.string().required(),
         }),
     },
     // POST /v1/log/weight

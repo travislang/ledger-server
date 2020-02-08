@@ -190,9 +190,11 @@ exports.listAllWorkoutTotals = async (req, res, next) => {
 
 exports.workoutStreak = async (req, res, next) => {
     try {
-        const { date } = req.query
+        const { date, yesterdayText } = req.query
 
         let workoutStreak = await WorkoutStreak.findOne({ userId: req.user.id })
+
+        console.log('workout Streak', workoutStreak)
 
         if (!workoutStreak) {
             workoutStreak = await WorkoutStreak.create({
@@ -203,10 +205,8 @@ exports.workoutStreak = async (req, res, next) => {
         }
 
         const beginDate = moment(workoutStreak.dateLastChecked)
-            .startOf('day')
-            .toDate()
         const endDate = moment(beginDate)
-            .endOf('day')
+            .add(24, 'hours')
             .toDate()
 
         if (moment(date).isBetween(beginDate, endDate)) {
@@ -217,11 +217,8 @@ exports.workoutStreak = async (req, res, next) => {
 
         const newStartDate = moment(date)
             .subtract(1, 'day')
-            .startOf('day')
             .toDate()
-        const newEndDate = moment(newStartDate)
-            .endOf('day')
-            .toDate()
+        const newEndDate = moment(date).toDate()
 
         const workoutLogs = await WorkoutLog.find({ userId: req.user.id })
             .where('date')
@@ -230,7 +227,7 @@ exports.workoutStreak = async (req, res, next) => {
 
         if (workoutLogs.length) {
             workoutStreak.streak += 1
-        } else if (req.user.trainingPlan[moment(newStartDate).format('dddd')]) {
+        } else if (req.user.trainingPlan[yesterdayText]) {
             workoutStreak.streak = 0
         }
 
@@ -249,17 +246,10 @@ exports.listWeightLog = async (req, res, next) => {
     try {
         const { startDate, endDate } = req.query
 
-        const newStartDate = moment(startDate)
-            .startOf('day')
-            .toDate()
-        const newEndDate = moment(endDate)
-            .endOf('day')
-            .toDate()
-
         const weightLogs = await WeightLog.find({ userId: req.user.id })
             .where('date')
-            .gte(newStartDate)
-            .lte(newEndDate)
+            .gte(startDate)
+            .lte(endDate)
             .sort({ date: 1 })
 
         const transformedLogs = weightLogs.map(log => log.transform())
@@ -276,7 +266,7 @@ exports.addWeightLog = async (req, res, next) => {
         const weightLogEntry = new WeightLog({
             weight: req.body.weight,
             userId: req.user.id,
-            date: req.body.date || Date.now(),
+            date: req.body.date || moment.utc().toDate(),
         })
 
         const updatedWeightLog = await weightLogEntry.save()
