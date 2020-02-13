@@ -194,8 +194,6 @@ exports.workoutStreak = async (req, res, next) => {
 
         let workoutStreak = await WorkoutStreak.findOne({ userId: req.user.id })
 
-        console.log('workout Streak', workoutStreak)
-
         if (!workoutStreak) {
             workoutStreak = await WorkoutStreak.create({
                 userId: req.user.id,

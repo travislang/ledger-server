@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
     secure: false, // upgrades later with STARTTLS
 })
 
-router.route('/contact').post(contactUsLimiter, async (req, res) => {
+router.route('/contact').post(async (req, res) => {
     const mailOpts = {
         from: req.body.email,
         to: emailConfig.username,
