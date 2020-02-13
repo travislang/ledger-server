@@ -5,7 +5,7 @@ const rateLimit = require('express-rate-limit')
 
 const contactUsLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: 3, // start blocking after 5 requests
+    max: 5, // start blocking after 5 requests
     message: 'Too many forms submitted from this IP, please try again after an hour',
 })
 
@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
     secure: false, // upgrades later with STARTTLS
 })
 
-router.route('/contact').post(async (req, res) => {
+router.route('/contact').post(contactUsLimiter, async (req, res) => {
     const mailOpts = {
         from: req.body.email,
         to: emailConfig.username,
